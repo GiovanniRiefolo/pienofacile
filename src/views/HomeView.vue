@@ -1,9 +1,9 @@
 <script setup>
-import TheWelcome from '../components/TheWelcome.vue'
+ import FillingStationList from "@/components/filling-station-list.vue";
 </script>
 
 <template>
   <main>
-    <TheWelcome />
+    <FillingStationList />
   </main>
 </template>
