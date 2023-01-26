@@ -1,5 +1,5 @@
 <script setup>
- import FillingStationList from "@/components/filling-station-list.vue";
+ import FillingStationList from "../components/filling-station-list.vue";
 </script>
 
 <template>
