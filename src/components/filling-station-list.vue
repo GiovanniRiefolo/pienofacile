@@ -7,7 +7,7 @@ onMounted(() => {
 
 const position = ref({
   points: [],
-  radius: 5,
+  radius: 5
 });
 
 const errorMessage = ref();
@@ -19,7 +19,7 @@ const getUserLocation = () => {
     navigator.geolocation.getCurrentPosition((data) => {
       let currentPosition = {
         lat: data.coords.latitude,
-        lng: data.coords.longitude,
+        lng: data.coords.longitude
       };
       position.value.points = [];
       position.value.points.push(currentPosition);
@@ -43,24 +43,38 @@ const fetchData = () => {
 };
 </script>
 <template>
-  <button @click="getUserLocation()">Geolocalizzami</button>
-  <template v-if="position.points">
-    <p v-for="point in position.points">Latitudine: {{ point.lat }}, Longidutine: {{ point.lng }}</p>
-  </template>
-  <button @click="fetchData">trova carburanti</button>
-  <template v-if="errorMessage">
-    <p>Attenzione! {{ errorMessage }}</p>
-  </template>
-  <ul>
-    <li :key="result.id" v-for="result in results">
-      <p>Nome: {{ result.name }}</p>
-      <p>Brand: {{ result.brand }}</p>
-      <p>Prezzi:</p>
-      <ul>
-        <li :key="fuel.fuelId" v-for="fuel in result.fuels">
-          {{ fuel.name }}: {{ fuel.price }}
-        </li>
-      </ul>
-    </li>
-  </ul>
+  <section>
+    <button @click="getUserLocation()">Geolocalizzami</button>
+    <template v-if="position.points">
+      <p v-for="point in position.points">Latitudine: {{ point.lat }}, Longidutine: {{ point.lng }}</p>
+    </template>
+  </section>
+  <section>
+    <input type="range" min="1" max="10" v-model="position.radius">
+    <p>Area: {{ position.radius }} Km</p>
+  </section>
+  <section>
+    <button @click="fetchData">trova carburanti</button>
+  </section>
+  <hr>
+  <section>
+    <template v-if="errorMessage">
+      <p>Attenzione! {{ errorMessage }}</p>
+    </template>
+    <ul>
+      <li :key="result.id" v-for="result in results">
+        <h3>{{ result.name }}</h3>
+        <ul>
+          <li>Brand: {{ result.brand }}</li>
+          <li>Prezzi:
+            <ul>
+              <li :key="fuel.fuelId" v-for="fuel in result.fuels">
+                {{ fuel.name }}: {{ fuel.price }}
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </section>
 </template>
