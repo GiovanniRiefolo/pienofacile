@@ -1,6 +1,9 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import { default as axios } from "axios";
+import {ref, onMounted} from "vue";
+import {default as axios} from "axios";
+import Slider from "primevue/slider";
+import Divider from "primevue/divider";
+import Button from "primevue/button";
 
 onMounted(() => {
 });
@@ -11,6 +14,8 @@ const position = ref({
 });
 
 const errorMessage = ref();
+
+const loading = ref(false)
 
 const getUserLocation = () => {
   if (!navigator.geolocation) {
@@ -30,34 +35,47 @@ const getUserLocation = () => {
 const results = ref([]);
 
 const fetchData = () => {
+  loading.value = true
   axios
-    .post("api/zone", position.value)
-    .then((response) => {
-      if (response.status === 200) {
-        results.value = response.data.results;
-      } else {
-        console.log("Non sono riuscito a recuperare i risultati");
-      }
-    })
-    .catch((e) => console.log(e));
+      .post("api/zone", position.value)
+      .then((response) => {
+        if (response.status === 200) {
+          results.value = response.data.results;
+        } else {
+          console.log("Non sono riuscito a recuperare i risultati");
+        }
+        loading.value = false
+      })
+      .catch((e) => console.log(e));
 };
 </script>
 <template>
   <section>
-    <button @click="getUserLocation()">Geolocalizzami</button>
+    <button @click="getUserLocation()">
+      <font-awesome-icon icon="fa-light fa-location-dot"/>
+      Geolocalizzami
+    </button>
+    <button @click="getUserLocation()">
+      <font-awesome-icon icon="fa-light fa-location-dot"/>
+      Inserisci la posizione
+    </button>
     <template v-if="position.points">
-      <p v-for="point in position.points">Latitudine: {{ point.lat }}, Longidutine: {{ point.lng }}</p>
+      <p v-for="point in position.points"><strong>Latitudine:</strong> {{ point.lat }},<br/><strong>Longidutine:</strong> {{ point.lng }}</p>
     </template>
   </section>
+
   <section>
-    <input type="range" min="1" max="10" v-model="position.radius">
     <p>Area: {{ position.radius }} Km</p>
+    <Slider v-model="position.radius" :step="1" :min="1" :max="10"/>
   </section>
+
+  <Button @click="fetchData">trova carburanti</Button>
+
+
   <section>
-    <button @click="fetchData">trova carburanti</button>
-  </section>
-  <hr>
-  <section>
+    <Divider align="center">
+      <span class="p-tag">Elenco distributori</span>
+    </Divider>
     <template v-if="errorMessage">
       <p>Attenzione! {{ errorMessage }}</p>
     </template>

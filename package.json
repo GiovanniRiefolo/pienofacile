@@ -10,7 +10,10 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "axios": "^1.2.2",
+    "@fortawesome/fontawesome-svg-core": "^6.2.1",
+    "@fortawesome/pro-light-svg-icons": "^6.2.1",
+    "@fortawesome/vue-fontawesome": "^3.0.3",
+    "axios": "^1.2.6",
     "pinia": "^2.0.28",
     "primevue": "^3.22.3",
     "vue": "^3.2.45",

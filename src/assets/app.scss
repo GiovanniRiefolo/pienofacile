@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans&display=swap');
+
+// Global Styles
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: #3D405B;
+  background: #FDFDFA;
+  font-family: 'Work Sans', sans-serif;
+}
+
+// Typography
+p {
+  font-size: clamp(1rem, 0.9721rem + 0.1274vw, 1.125rem);
+  font-weight: 400;
+}
+
+strong {
+  font-weight: 600;
+}
+
+h1 {
+  font-size: clamp(1.5rem, 1.3885rem + 0.5096vw, 2rem);
+  font-weight: 600;
+}
+
+h2 {
+  font-size: clamp(1.25rem, 1.1385rem + 0.5096vw, 1.75rem);
+  font-weight: 600;
+}
+
+// Main styles
+.site-header {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+
+  width: 100%;
+  padding: 16px;
+
+  &__title {
+    margin: 0;
+  }
+
+  &__nav {
+    margin-left: auto
+  }
+}
+
+main {
+  padding: 24px;
+}
+
+section {
+  margin: 32px 0;
+  padding: 16px;
+  border-radius: 8px;
+  background: #FEFEFD;
+  box-shadow: 0 0 16px 0 rgba(#3D405B, .1);
+
+  &:first-child {
+    margin: 0 0 32px;
+  }
+}
+
+// Custom component styles
+.p-divider {
+  margin: 16px 0;
+
+  &::before {
+    height: 1px;
+    border: 0;
+    background-color: #3D405B;
+  }
+
+  & span {
+    padding: 4px 8px;
+    border-radius: 8px;
+    background: #3D405B;
+    color: #FEFEFD;
+    font-size: clamp(0.75rem, 0.6664rem + 0.3822vw, 1.125rem);
+    box-shadow: 0 0 0 8px #fff;
+  }
+}
+
+.p-button {
+  background: #81B29A;
+  border: 0;
+  padding: 16px 20px;
+  font-size: clamp(1rem, 0.9721rem + 0.1274vw, 1.125rem);
+  font-weight: 500;
+  border-radius: 32px;
+}

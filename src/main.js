@@ -1,17 +1,27 @@
-import { createApp } from "vue";
-import { createPinia } from "pinia";
+import {createApp} from "vue";
+import {createPinia} from "pinia";
+
+import {library} from '@fortawesome/fontawesome-svg-core'
+import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
+import { faLocationDot, faHouseBlank, faCircleHeart } from '@fortawesome/pro-light-svg-icons'
+
 
 import App from "./App.vue";
 import router from "./router";
 
 import PrimeVue from "primevue/config";
 
-import "./assets/app.css";
+import "./assets/app.scss";
+
+// add icons to the library
+library.add(faLocationDot, faHouseBlank, faCircleHeart)
 
 const app = createApp(App);
 
-app.use(createPinia());
-app.use(router);
-app.use(PrimeVue);
+app.use(createPinia())
+app.use(router)
+app.use(PrimeVue)
 
-app.mount("#app");
+app.component('font-awesome-icon', FontAwesomeIcon)
+
+app.mount("#app")
