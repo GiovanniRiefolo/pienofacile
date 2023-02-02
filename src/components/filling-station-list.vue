@@ -1,6 +1,6 @@
 <script setup>
-import {ref, onMounted} from "vue";
-import {default as axios} from "axios";
+import { ref, onMounted } from "vue";
+import { default as axios } from "axios";
 import Slider from "primevue/slider";
 import Divider from "primevue/divider";
 import Button from "primevue/button";
@@ -15,569 +15,569 @@ const position = ref({
 
 const errorMessage = ref();
 
-const loading = ref(false)
+const loading = ref(false);
 
 const address = ref({
   street: null,
   housenumber: null,
   city: null,
   state: null,
-  country: 'Italia',
-  postalcode: null,
-})
+  country: "Italia",
+  postalcode: null
+});
 
 const provences = [
   {
-    "nome": "Agrigento",
-    "sigla": "AG",
-    "regione": "Sicilia"
+    nome: "Agrigento",
+    sigla: "AG",
+    regione: "Sicilia"
   },
   {
-    "nome": "Alessandria",
-    "sigla": "AL",
-    "regione": "Piemonte"
+    nome: "Alessandria",
+    sigla: "AL",
+    regione: "Piemonte"
   },
   {
-    "nome": "Ancona",
-    "sigla": "AN",
-    "regione": "Marche"
+    nome: "Ancona",
+    sigla: "AN",
+    regione: "Marche"
   },
   {
-    "nome": "Arezzo",
-    "sigla": "AR",
-    "regione": "Toscana"
+    nome: "Arezzo",
+    sigla: "AR",
+    regione: "Toscana"
   },
   {
-    "nome": "Ascoli Piceno",
-    "sigla": "AP",
-    "regione": "Marche"
+    nome: "Ascoli Piceno",
+    sigla: "AP",
+    regione: "Marche"
   },
   {
-    "nome": "Asti",
-    "sigla": "AT",
-    "regione": "Piemonte"
+    nome: "Asti",
+    sigla: "AT",
+    regione: "Piemonte"
   },
   {
-    "nome": "Avellino",
-    "sigla": "AV",
-    "regione": "Campania"
+    nome: "Avellino",
+    sigla: "AV",
+    regione: "Campania"
   },
   {
-    "nome": "Bari",
-    "sigla": "BA",
-    "regione": "Puglia"
+    nome: "Bari",
+    sigla: "BA",
+    regione: "Puglia"
   },
   {
-    "nome": "Barletta-Andria-Trani",
-    "sigla": "BT",
-    "regione": "Puglia"
+    nome: "Barletta-Andria-Trani",
+    sigla: "BT",
+    regione: "Puglia"
   },
   {
-    "nome": "Belluno",
-    "sigla": "BL",
-    "regione": "Veneto"
+    nome: "Belluno",
+    sigla: "BL",
+    regione: "Veneto"
   },
   {
-    "nome": "Benevento",
-    "sigla": "BN",
-    "regione": "Campania"
+    nome: "Benevento",
+    sigla: "BN",
+    regione: "Campania"
   },
   {
-    "nome": "Bergamo",
-    "sigla": "BG",
-    "regione": "Lombardia"
+    nome: "Bergamo",
+    sigla: "BG",
+    regione: "Lombardia"
   },
   {
-    "nome": "Biella",
-    "sigla": "BI",
-    "regione": "Piemonte"
+    nome: "Biella",
+    sigla: "BI",
+    regione: "Piemonte"
   },
   {
-    "nome": "Bologna",
-    "sigla": "BO",
-    "regione": "Emilia-Romagna"
+    nome: "Bologna",
+    sigla: "BO",
+    regione: "Emilia-Romagna"
   },
   {
-    "nome": "Bolzano/Bozen",
-    "sigla": "BZ",
-    "regione": "Trentino-Alto Adige/Südtirol"
+    nome: "Bolzano/Bozen",
+    sigla: "BZ",
+    regione: "Trentino-Alto Adige/Südtirol"
   },
   {
-    "nome": "Brescia",
-    "sigla": "BS",
-    "regione": "Lombardia"
+    nome: "Brescia",
+    sigla: "BS",
+    regione: "Lombardia"
   },
   {
-    "nome": "Brindisi",
-    "sigla": "BR",
-    "regione": "Puglia"
+    nome: "Brindisi",
+    sigla: "BR",
+    regione: "Puglia"
   },
   {
-    "nome": "Cagliari",
-    "sigla": "CA",
-    "regione": "Sardegna"
+    nome: "Cagliari",
+    sigla: "CA",
+    regione: "Sardegna"
   },
   {
-    "nome": "Caltanissetta",
-    "sigla": "CL",
-    "regione": "Sicilia"
+    nome: "Caltanissetta",
+    sigla: "CL",
+    regione: "Sicilia"
   },
   {
-    "nome": "Campobasso",
-    "sigla": "CB",
-    "regione": "Molise"
+    nome: "Campobasso",
+    sigla: "CB",
+    regione: "Molise"
   },
   {
-    "nome": "Carbonia-Iglesias",
-    "sigla": "CI",
-    "regione": "Sardegna"
+    nome: "Carbonia-Iglesias",
+    sigla: "CI",
+    regione: "Sardegna"
   },
   {
-    "nome": "Caserta",
-    "sigla": "CE",
-    "regione": "Campania"
+    nome: "Caserta",
+    sigla: "CE",
+    regione: "Campania"
   },
   {
-    "nome": "Catania",
-    "sigla": "CT",
-    "regione": "Sicilia"
+    nome: "Catania",
+    sigla: "CT",
+    regione: "Sicilia"
   },
   {
-    "nome": "Catanzaro",
-    "sigla": "CZ",
-    "regione": "Calabria"
+    nome: "Catanzaro",
+    sigla: "CZ",
+    regione: "Calabria"
   },
   {
-    "nome": "Chieti",
-    "sigla": "CH",
-    "regione": "Abruzzo"
+    nome: "Chieti",
+    sigla: "CH",
+    regione: "Abruzzo"
   },
   {
-    "nome": "Como",
-    "sigla": "CO",
-    "regione": "Lombardia"
+    nome: "Como",
+    sigla: "CO",
+    regione: "Lombardia"
   },
   {
-    "nome": "Cosenza",
-    "sigla": "CS",
-    "regione": "Calabria"
+    nome: "Cosenza",
+    sigla: "CS",
+    regione: "Calabria"
   },
   {
-    "nome": "Cremona",
-    "sigla": "CR",
-    "regione": "Lombardia"
+    nome: "Cremona",
+    sigla: "CR",
+    regione: "Lombardia"
   },
   {
-    "nome": "Crotone",
-    "sigla": "KR",
-    "regione": "Calabria"
+    nome: "Crotone",
+    sigla: "KR",
+    regione: "Calabria"
   },
   {
-    "nome": "Cuneo",
-    "sigla": "CN",
-    "regione": "Piemonte"
+    nome: "Cuneo",
+    sigla: "CN",
+    regione: "Piemonte"
   },
   {
-    "nome": "Enna",
-    "sigla": "EN",
-    "regione": "Sicilia"
+    nome: "Enna",
+    sigla: "EN",
+    regione: "Sicilia"
   },
   {
-    "nome": "Fermo",
-    "sigla": "FM",
-    "regione": "Marche"
+    nome: "Fermo",
+    sigla: "FM",
+    regione: "Marche"
   },
   {
-    "nome": "Ferrara",
-    "sigla": "FE",
-    "regione": "Emilia-Romagna"
+    nome: "Ferrara",
+    sigla: "FE",
+    regione: "Emilia-Romagna"
   },
   {
-    "nome": "Firenze",
-    "sigla": "FI",
-    "regione": "Toscana"
+    nome: "Firenze",
+    sigla: "FI",
+    regione: "Toscana"
   },
   {
-    "nome": "Foggia",
-    "sigla": "FG",
-    "regione": "Puglia"
+    nome: "Foggia",
+    sigla: "FG",
+    regione: "Puglia"
   },
   {
-    "nome": "Forlì-Cesena",
-    "sigla": "FC",
-    "regione": "Emilia-Romagna"
+    nome: "Forlì-Cesena",
+    sigla: "FC",
+    regione: "Emilia-Romagna"
   },
   {
-    "nome": "Frosinone",
-    "sigla": "FR",
-    "regione": "Lazio"
+    nome: "Frosinone",
+    sigla: "FR",
+    regione: "Lazio"
   },
   {
-    "nome": "Genova",
-    "sigla": "GE",
-    "regione": "Liguria"
+    nome: "Genova",
+    sigla: "GE",
+    regione: "Liguria"
   },
   {
-    "nome": "Gorizia",
-    "sigla": "GO",
-    "regione": "Friuli-Venezia Giulia"
+    nome: "Gorizia",
+    sigla: "GO",
+    regione: "Friuli-Venezia Giulia"
   },
   {
-    "nome": "Grosseto",
-    "sigla": "GR",
-    "regione": "Toscana"
+    nome: "Grosseto",
+    sigla: "GR",
+    regione: "Toscana"
   },
   {
-    "nome": "Imperia",
-    "sigla": "IM",
-    "regione": "Liguria"
+    nome: "Imperia",
+    sigla: "IM",
+    regione: "Liguria"
   },
   {
-    "nome": "Isernia",
-    "sigla": "IS",
-    "regione": "Molise"
+    nome: "Isernia",
+    sigla: "IS",
+    regione: "Molise"
   },
   {
-    "nome": "L'Aquila",
-    "sigla": "AQ",
-    "regione": "Abruzzo"
+    nome: "L'Aquila",
+    sigla: "AQ",
+    regione: "Abruzzo"
   },
   {
-    "nome": "La Spezia",
-    "sigla": "SP",
-    "regione": "Liguria"
+    nome: "La Spezia",
+    sigla: "SP",
+    regione: "Liguria"
   },
   {
-    "nome": "Latina",
-    "sigla": "LT",
-    "regione": "Lazio"
+    nome: "Latina",
+    sigla: "LT",
+    regione: "Lazio"
   },
   {
-    "nome": "Lecce",
-    "sigla": "LE",
-    "regione": "Puglia"
+    nome: "Lecce",
+    sigla: "LE",
+    regione: "Puglia"
   },
   {
-    "nome": "Lecco",
-    "sigla": "LC",
-    "regione": "Lombardia"
+    nome: "Lecco",
+    sigla: "LC",
+    regione: "Lombardia"
   },
   {
-    "nome": "Livorno",
-    "sigla": "LI",
-    "regione": "Toscana"
+    nome: "Livorno",
+    sigla: "LI",
+    regione: "Toscana"
   },
   {
-    "nome": "Lodi",
-    "sigla": "LO",
-    "regione": "Lombardia"
+    nome: "Lodi",
+    sigla: "LO",
+    regione: "Lombardia"
   },
   {
-    "nome": "Lucca",
-    "sigla": "LU",
-    "regione": "Toscana"
+    nome: "Lucca",
+    sigla: "LU",
+    regione: "Toscana"
   },
   {
-    "nome": "Macerata",
-    "sigla": "MC",
-    "regione": "Marche"
+    nome: "Macerata",
+    sigla: "MC",
+    regione: "Marche"
   },
   {
-    "nome": "Mantova",
-    "sigla": "MN",
-    "regione": "Lombardia"
+    nome: "Mantova",
+    sigla: "MN",
+    regione: "Lombardia"
   },
   {
-    "nome": "Massa-Carrara",
-    "sigla": "MS",
-    "regione": "Toscana"
+    nome: "Massa-Carrara",
+    sigla: "MS",
+    regione: "Toscana"
   },
   {
-    "nome": "Matera",
-    "sigla": "MT",
-    "regione": "Basilicata"
+    nome: "Matera",
+    sigla: "MT",
+    regione: "Basilicata"
   },
   {
-    "nome": "Medio Campidano",
-    "sigla": "VS",
-    "regione": "Sardegna"
+    nome: "Medio Campidano",
+    sigla: "VS",
+    regione: "Sardegna"
   },
   {
-    "nome": "Messina",
-    "sigla": "ME",
-    "regione": "Sicilia"
+    nome: "Messina",
+    sigla: "ME",
+    regione: "Sicilia"
   },
   {
-    "nome": "Milano",
-    "sigla": "MI",
-    "regione": "Lombardia"
+    nome: "Milano",
+    sigla: "MI",
+    regione: "Lombardia"
   },
   {
-    "nome": "Modena",
-    "sigla": "MO",
-    "regione": "Emilia-Romagna"
+    nome: "Modena",
+    sigla: "MO",
+    regione: "Emilia-Romagna"
   },
   {
-    "nome": "Monza e della Brianza",
-    "sigla": "MB",
-    "regione": "Lombardia"
+    nome: "Monza e della Brianza",
+    sigla: "MB",
+    regione: "Lombardia"
   },
   {
-    "nome": "Napoli",
-    "sigla": "NA",
-    "regione": "Campania"
+    nome: "Napoli",
+    sigla: "NA",
+    regione: "Campania"
   },
   {
-    "nome": "Novara",
-    "sigla": "NO",
-    "regione": "Piemonte"
+    nome: "Novara",
+    sigla: "NO",
+    regione: "Piemonte"
   },
   {
-    "nome": "Nuoro",
-    "sigla": "NU",
-    "regione": "Sardegna"
+    nome: "Nuoro",
+    sigla: "NU",
+    regione: "Sardegna"
   },
   {
-    "nome": "Ogliastra",
-    "sigla": "OG",
-    "regione": "Sardegna"
+    nome: "Ogliastra",
+    sigla: "OG",
+    regione: "Sardegna"
   },
   {
-    "nome": "Olbia-Tempio",
-    "sigla": "OT",
-    "regione": "Sardegna"
+    nome: "Olbia-Tempio",
+    sigla: "OT",
+    regione: "Sardegna"
   },
   {
-    "nome": "Oristano",
-    "sigla": "OR",
-    "regione": "Sardegna"
+    nome: "Oristano",
+    sigla: "OR",
+    regione: "Sardegna"
   },
   {
-    "nome": "Padova",
-    "sigla": "PD",
-    "regione": "Veneto"
+    nome: "Padova",
+    sigla: "PD",
+    regione: "Veneto"
   },
   {
-    "nome": "Palermo",
-    "sigla": "PA",
-    "regione": "Sicilia"
+    nome: "Palermo",
+    sigla: "PA",
+    regione: "Sicilia"
   },
   {
-    "nome": "Parma",
-    "sigla": "PR",
-    "regione": "Emilia-Romagna"
+    nome: "Parma",
+    sigla: "PR",
+    regione: "Emilia-Romagna"
   },
   {
-    "nome": "Pavia",
-    "sigla": "PV",
-    "regione": "Lombardia"
+    nome: "Pavia",
+    sigla: "PV",
+    regione: "Lombardia"
   },
   {
-    "nome": "Perugia",
-    "sigla": "PG",
-    "regione": "Umbria"
+    nome: "Perugia",
+    sigla: "PG",
+    regione: "Umbria"
   },
   {
-    "nome": "Pesaro e Urbino",
-    "sigla": "PU",
-    "regione": "Marche"
+    nome: "Pesaro e Urbino",
+    sigla: "PU",
+    regione: "Marche"
   },
   {
-    "nome": "Pescara",
-    "sigla": "PE",
-    "regione": "Abruzzo"
+    nome: "Pescara",
+    sigla: "PE",
+    regione: "Abruzzo"
   },
   {
-    "nome": "Piacenza",
-    "sigla": "PC",
-    "regione": "Emilia-Romagna"
+    nome: "Piacenza",
+    sigla: "PC",
+    regione: "Emilia-Romagna"
   },
   {
-    "nome": "Pisa",
-    "sigla": "PI",
-    "regione": "Toscana"
+    nome: "Pisa",
+    sigla: "PI",
+    regione: "Toscana"
   },
   {
-    "nome": "Pistoia",
-    "sigla": "PT",
-    "regione": "Toscana"
+    nome: "Pistoia",
+    sigla: "PT",
+    regione: "Toscana"
   },
   {
-    "nome": "Pordenone",
-    "sigla": "PN",
-    "regione": "Friuli-Venezia Giulia"
+    nome: "Pordenone",
+    sigla: "PN",
+    regione: "Friuli-Venezia Giulia"
   },
   {
-    "nome": "Potenza",
-    "sigla": "PZ",
-    "regione": "Basilicata"
+    nome: "Potenza",
+    sigla: "PZ",
+    regione: "Basilicata"
   },
   {
-    "nome": "Prato",
-    "sigla": "PO",
-    "regione": "Toscana"
+    nome: "Prato",
+    sigla: "PO",
+    regione: "Toscana"
   },
   {
-    "nome": "Ragusa",
-    "sigla": "RG",
-    "regione": "Sicilia"
+    nome: "Ragusa",
+    sigla: "RG",
+    regione: "Sicilia"
   },
   {
-    "nome": "Ravenna",
-    "sigla": "RA",
-    "regione": "Emilia-Romagna"
+    nome: "Ravenna",
+    sigla: "RA",
+    regione: "Emilia-Romagna"
   },
   {
-    "nome": "Reggio di Calabria",
-    "sigla": "RC",
-    "regione": "Calabria"
+    nome: "Reggio di Calabria",
+    sigla: "RC",
+    regione: "Calabria"
   },
   {
-    "nome": "Reggio nell'Emilia",
-    "sigla": "RE",
-    "regione": "Emilia-Romagna"
+    nome: "Reggio nell'Emilia",
+    sigla: "RE",
+    regione: "Emilia-Romagna"
   },
   {
-    "nome": "Rieti",
-    "sigla": "RI",
-    "regione": "Lazio"
+    nome: "Rieti",
+    sigla: "RI",
+    regione: "Lazio"
   },
   {
-    "nome": "Rimini",
-    "sigla": "RN",
-    "regione": "Emilia-Romagna"
+    nome: "Rimini",
+    sigla: "RN",
+    regione: "Emilia-Romagna"
   },
   {
-    "nome": "Roma",
-    "sigla": "RM",
-    "regione": "Lazio"
+    nome: "Roma",
+    sigla: "RM",
+    regione: "Lazio"
   },
   {
-    "nome": "Rovigo",
-    "sigla": "RO",
-    "regione": "Veneto"
+    nome: "Rovigo",
+    sigla: "RO",
+    regione: "Veneto"
   },
   {
-    "nome": "Salerno",
-    "sigla": "SA",
-    "regione": "Campania"
+    nome: "Salerno",
+    sigla: "SA",
+    regione: "Campania"
   },
   {
-    "nome": "Sassari",
-    "sigla": "SS",
-    "regione": "Sardegna"
+    nome: "Sassari",
+    sigla: "SS",
+    regione: "Sardegna"
   },
   {
-    "nome": "Savona",
-    "sigla": "SV",
-    "regione": "Liguria"
+    nome: "Savona",
+    sigla: "SV",
+    regione: "Liguria"
   },
   {
-    "nome": "Siena",
-    "sigla": "SI",
-    "regione": "Toscana"
+    nome: "Siena",
+    sigla: "SI",
+    regione: "Toscana"
   },
   {
-    "nome": "Siracusa",
-    "sigla": "SR",
-    "regione": "Sicilia"
+    nome: "Siracusa",
+    sigla: "SR",
+    regione: "Sicilia"
   },
   {
-    "nome": "Sondrio",
-    "sigla": "SO",
-    "regione": "Lombardia"
+    nome: "Sondrio",
+    sigla: "SO",
+    regione: "Lombardia"
   },
   {
-    "nome": "Taranto",
-    "sigla": "TA",
-    "regione": "Puglia"
+    nome: "Taranto",
+    sigla: "TA",
+    regione: "Puglia"
   },
   {
-    "nome": "Teramo",
-    "sigla": "TE",
-    "regione": "Abruzzo"
+    nome: "Teramo",
+    sigla: "TE",
+    regione: "Abruzzo"
   },
   {
-    "nome": "Terni",
-    "sigla": "TR",
-    "regione": "Umbria"
+    nome: "Terni",
+    sigla: "TR",
+    regione: "Umbria"
   },
   {
-    "nome": "Torino",
-    "sigla": "TO",
-    "regione": "Piemonte"
+    nome: "Torino",
+    sigla: "TO",
+    regione: "Piemonte"
   },
   {
-    "nome": "Trapani",
-    "sigla": "TP",
-    "regione": "Sicilia"
+    nome: "Trapani",
+    sigla: "TP",
+    regione: "Sicilia"
   },
   {
-    "nome": "Trento",
-    "sigla": "TN",
-    "regione": "Trentino-Alto Adige/Südtirol"
+    nome: "Trento",
+    sigla: "TN",
+    regione: "Trentino-Alto Adige/Südtirol"
   },
   {
-    "nome": "Treviso",
-    "sigla": "TV",
-    "regione": "Veneto"
+    nome: "Treviso",
+    sigla: "TV",
+    regione: "Veneto"
   },
   {
-    "nome": "Trieste",
-    "sigla": "TS",
-    "regione": "Friuli-Venezia Giulia"
+    nome: "Trieste",
+    sigla: "TS",
+    regione: "Friuli-Venezia Giulia"
   },
   {
-    "nome": "Udine",
-    "sigla": "UD",
-    "regione": "Friuli-Venezia Giulia"
+    nome: "Udine",
+    sigla: "UD",
+    regione: "Friuli-Venezia Giulia"
   },
   {
-    "nome": "Valle d'Aosta/Vallée d'Aoste",
-    "sigla": "AO",
-    "regione": "Valle d'Aosta/Vallée d'Aoste"
+    nome: "Valle d'Aosta/Vallée d'Aoste",
+    sigla: "AO",
+    regione: "Valle d'Aosta/Vallée d'Aoste"
   },
   {
-    "nome": "Varese",
-    "sigla": "VA",
-    "regione": "Lombardia"
+    nome: "Varese",
+    sigla: "VA",
+    regione: "Lombardia"
   },
   {
-    "nome": "Venezia",
-    "sigla": "VE",
-    "regione": "Veneto"
+    nome: "Venezia",
+    sigla: "VE",
+    regione: "Veneto"
   },
   {
-    "nome": "Verbano-Cusio-Ossola",
-    "sigla": "VB",
-    "regione": "Piemonte"
+    nome: "Verbano-Cusio-Ossola",
+    sigla: "VB",
+    regione: "Piemonte"
   },
   {
-    "nome": "Vercelli",
-    "sigla": "VC",
-    "regione": "Piemonte"
+    nome: "Vercelli",
+    sigla: "VC",
+    regione: "Piemonte"
   },
   {
-    "nome": "Verona",
-    "sigla": "VR",
-    "regione": "Veneto"
+    nome: "Verona",
+    sigla: "VR",
+    regione: "Veneto"
   },
   {
-    "nome": "Vibo Valentia",
-    "sigla": "VV",
-    "regione": "Calabria"
+    nome: "Vibo Valentia",
+    sigla: "VV",
+    regione: "Calabria"
   },
   {
-    "nome": "Vicenza",
-    "sigla": "VI",
-    "regione": "Veneto"
+    nome: "Vicenza",
+    sigla: "VI",
+    regione: "Veneto"
   },
   {
-    "nome": "Viterbo",
-    "sigla": "VT",
-    "regione": "Lazio"
+    nome: "Viterbo",
+    sigla: "VT",
+    regione: "Lazio"
   }
-]
+];
 
 const getUserLocation = () => {
   if (!navigator.geolocation) {
@@ -595,63 +595,121 @@ const getUserLocation = () => {
 };
 
 const getUserLocationFromAddress = () => {
-// https://nominatim.org/release-docs/develop/api/Search/#parameters
-}
+  // https://nominatim.org/release-docs/develop/api/Search/
+  axios
+    .post(
+      "api/reverseGeo" +
+      "search?street=" +
+      address.value.street +
+      "+" +
+      address.value.housenumber +
+      "&city=" +
+      address.value.city +
+      "&country=" +
+      address.value.country +
+      "&postalcode=" +
+      address.value.postalcode +
+      "&format=jsonv2",
+      {}
+    )
+    .then((response) => {
+      let currentPosition = {
+        lat: response[0].lat,
+        lng: dresponse[0].lat
+      };
+      position.value.points = [];
+      position.value.points.push(currentPosition);
+    })
+    .catch((e) => console.log(e));
+};
+
+const userAddressFormVisibility = ref(false);
+
+const toggleUserAddressForm = () => {
+  userAddressFormVisibility.value = !userAddressFormVisibility.value;
+};
 
 const results = ref([]);
 
 const fetchData = () => {
-  loading.value = true
+  loading.value = true;
   axios
-      .post("api/zone", position.value)
-      .then((response) => {
-        if (response.status === 200) {
-          results.value = response.data.results;
-        } else {
-          console.log("Non sono riuscito a recuperare i risultati");
-        }
-        loading.value = false
-      })
-      .catch((e) => console.log(e));
+    .post("api/zone", position.value)
+    .then((response) => {
+      if (response.status === 200) {
+        results.value = response.data.results;
+      } else {
+        console.log("Non sono riuscito a recuperare i risultati");
+      }
+      loading.value = false;
+    })
+    .catch((e) => console.log(e));
 };
 </script>
 
 <template>
   <section>
     <button @click="getUserLocation()">
-      <font-awesome-icon icon="fa-light fa-location-dot"/>
+      <font-awesome-icon icon="fa-light fa-location-dot" />
       Geolocalizzami
     </button>
   </section>
 
-  <section>
-    <input type="text" v-model="address.street" placeholder="via" />
-    <input type="number" v-model="address.housenumber" placeholder="numero" />
-    <input type="text" v-model="address.city" placeholder="città" />
+  <section v-show="userAddressFormVisibility === true">
+    <input
+      type="text"
+      v-model="address.street"
+      placeholder="via"
+      autocomplete="true"
+    />
+    <input
+      type="number"
+      v-model="address.housenumber"
+      placeholder="numero"
+      autocomplete="true"
+    />
+    <input
+      type="text"
+      v-model="address.city"
+      placeholder="città"
+      autocomplete="true"
+    />
     <select v-model="address.state" placeholder="provincia">
+      <option selected disabled>Seleziona la provincia</option>
       <option v-for="provence in provences" value="provence.sigla">
         {{ provence.nome }}
       </option>
     </select>
-    <input id="zip" v-model="address.postalcode" name="cap" type="text" pattern="[0-9]*" placeholder="cap">
-
-    <span @click="getUserLocationFromAddress()">
-      <font-awesome-icon icon="fa-light fa-location-dot"/>
-      Inserisci la posizione
-    </span>
+    <input
+      id="zip"
+      v-model="address.postalcode"
+      name="cap"
+      type="text"
+      pattern="[0-9]*"
+      placeholder="cap"
+      autocomplete="true"
+    />
+    <button @click="getUserLocationFromAddress()">Recupera posizione</button>
   </section>
 
-    <template v-if="position.points">
-      <p v-for="point in position.points"><strong>Latitudine:</strong> {{ point.lat }},<br/><strong>Longidutine:</strong> {{ point.lng }}</p>
-    </template>
+  <span @click="toggleUserAddressForm()">
+    <font-awesome-icon icon="fa-light fa-location-dot" />
+    Inserisci la posizione
+  </span>
+
+  <template v-if="position.points">
+    <p v-for="point in position.points">
+      <strong>Latitudine:</strong> {{ point.lat }},<br />
+      <strong>Longidutine:</strong>{{ point.lng }}
+    </p>
+  </template>
 
   <section>
     <p>Area: {{ position.radius }} Km</p>
-    <Slider v-model="position.radius" :step="1" :min="1" :max="10"/>
+    <Slider v-model="position.radius" :step="1" :min="1" :max="10" />
   </section>
 
   <Button @click="fetchData">trova carburanti</Button>
-
 
   <section>
     <Divider align="center">
@@ -665,7 +723,8 @@ const fetchData = () => {
         <h3>{{ result.name }}</h3>
         <ul>
           <li>Brand: {{ result.brand }}</li>
-          <li>Prezzi:
+          <li>
+            Prezzi:
             <ul>
               <li :key="fuel.fuelId" v-for="fuel in result.fuels">
                 {{ fuel.name }}: {{ fuel.price }}
