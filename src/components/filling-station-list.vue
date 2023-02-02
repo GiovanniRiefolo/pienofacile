@@ -21,7 +21,7 @@ const address = ref({
   street: null,
   housenumber: null,
   city: null,
-  state: null,
+  county: null,
   country: "Italia",
   postalcode: null
 });
@@ -607,6 +607,8 @@ const getUserLocationFromAddress = () => {
       address.value.city +
       "&country=" +
       address.value.country +
+        "&county=" +
+      address.value.county +
       "&postalcode=" +
       address.value.postalcode +
       "&format=jsonv2",
@@ -614,11 +616,12 @@ const getUserLocationFromAddress = () => {
     )
     .then((response) => {
       let currentPosition = {
-        lat: response[0].lat,
-        lng: dresponse[0].lat
+        lat: response.data[0].lat,
+        lng: response.data[0].lon
       };
       position.value.points = [];
       position.value.points.push(currentPosition);
+      console.log(currentPosition)
     })
     .catch((e) => console.log(e));
 };
@@ -674,9 +677,9 @@ const fetchData = () => {
       placeholder="città"
       autocomplete="true"
     />
-    <select v-model="address.state" placeholder="provincia">
+    <select v-model="address.county">
       <option selected disabled>Seleziona la provincia</option>
-      <option v-for="provence in provences" value="provence.sigla">
+      <option v-for="provence in provences" :value="provence.sigla">
         {{ provence.nome }}
       </option>
     </select>
