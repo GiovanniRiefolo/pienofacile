@@ -3,7 +3,7 @@ import {createPinia} from "pinia";
 
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
-import { faLocationDot, faHouseBlank, faCircleHeart } from '@fortawesome/pro-light-svg-icons'
+import { faLocationDot, faHouseBlank, faCircleHeart, faMagnifyingGlassLocation } from '@fortawesome/pro-regular-svg-icons'
 
 
 import App from "./App.vue";
@@ -14,7 +14,7 @@ import PrimeVue from "primevue/config";
 import "./assets/app.scss";
 
 // add icons to the library
-library.add(faLocationDot, faHouseBlank, faCircleHeart)
+library.add(faLocationDot, faHouseBlank, faCircleHeart, faMagnifyingGlassLocation)
 
 const app = createApp(App);
 

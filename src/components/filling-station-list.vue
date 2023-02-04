@@ -4,6 +4,9 @@ import { default as axios } from "axios";
 import Slider from "primevue/slider";
 import Divider from "primevue/divider";
 import Button from "primevue/button";
+import InputText from "primevue/inputtext";
+import InputNumber from "primevue/inputnumber";
+import Dropdown from "primevue/dropdown";
 
 onMounted(() => {
 });
@@ -607,7 +610,7 @@ const getUserLocationFromAddress = () => {
       address.value.city +
       "&country=" +
       address.value.country +
-        "&county=" +
+      "&county=" +
       address.value.county +
       "&postalcode=" +
       address.value.postalcode +
@@ -621,7 +624,7 @@ const getUserLocationFromAddress = () => {
       };
       position.value.points = [];
       position.value.points.push(currentPosition);
-      console.log(currentPosition)
+      console.log(currentPosition);
     })
     .catch((e) => console.log(e));
 };
@@ -651,39 +654,65 @@ const fetchData = () => {
 </script>
 
 <template>
-  <section>
-    <button @click="getUserLocation()">
-      <font-awesome-icon icon="fa-light fa-location-dot" />
-      Geolocalizzami
-    </button>
+
+  <section class="gelocalization">
+    <h2><span>Step 1 &mdash; </span>Luogo</h2>
+
+    <template v-if="userAddressFormVisibility === false || position.points.length === 0">
+      <Button @click="getUserLocation()">
+        <font-awesome-icon icon="fa-regular fa-location-dot" />
+        Geolocalizzami
+      </Button>
+
+      <div class="gelocalization__toggler">
+        <p>oppure</p>
+        <p class="toggle-link"
+           @click="toggleUserAddressForm()">
+          <font-awesome-icon icon="fa-regular fa-location-dot" />
+          Inserisci la posizione
+        </p>
+      </div>
+    </template>
+
+    <template v-if="position.points.length === 0">
+      <div class="geolocalization__founded-place">
+        <div>
+
+        </div>
+        <div>
+          <p v-for="point in position.points">
+            <strong>Latitudine:</strong> {{ point.lat }},<br />
+            <strong>Longidutine:</strong>{{ point.lng }}
+          </p>
+          <p class="geolocalization__change-manually"
+             @click="toggleUserAddressForm()">Modifica i dati manualmente</p>
+        </div>
+      </div>
+    </template>
   </section>
 
   <section v-show="userAddressFormVisibility === true">
-    <input
+    <InputText
       type="text"
       v-model="address.street"
-      placeholder="via"
+      placeholder="Via"
       autocomplete="true"
     />
-    <input
+    <InputText
       type="number"
       v-model="address.housenumber"
-      placeholder="numero"
+      placeholder="Civico"
       autocomplete="true"
     />
-    <input
+    <InputText
       type="text"
       v-model="address.city"
-      placeholder="città"
+      placeholder="Città"
       autocomplete="true"
     />
-    <select v-model="address.county">
-      <option selected disabled>Seleziona la provincia</option>
-      <option v-for="provence in provences" :value="provence.sigla">
-        {{ provence.nome }}
-      </option>
-    </select>
-    <input
+    <Dropdown v-model="address.county" :options="provences" optionLabel="nome" optionValue="sigla"
+              placeholder="Seleziona la provincia" :filter="true" filterPlaceholder="Cerca la provincia" />
+    <InputText
       id="zip"
       v-model="address.postalcode"
       name="cap"
@@ -692,32 +721,31 @@ const fetchData = () => {
       placeholder="cap"
       autocomplete="true"
     />
-    <button @click="getUserLocationFromAddress()">Recupera posizione</button>
+    <Button @click="getUserLocationFromAddress()">Recupera posizione</Button>
   </section>
 
-  <span @click="toggleUserAddressForm()">
-    <font-awesome-icon icon="fa-light fa-location-dot" />
-    Inserisci la posizione
-  </span>
-
-  <template v-if="position.points">
-    <p v-for="point in position.points">
-      <strong>Latitudine:</strong> {{ point.lat }},<br />
-      <strong>Longidutine:</strong>{{ point.lng }}
-    </p>
-  </template>
-
-  <section>
-    <p>Area: {{ position.radius }} Km</p>
+  <section class="distance">
+    <h2><span>Step 2 &mdash; </span>Distanza</h2>
     <Slider v-model="position.radius" :step="1" :min="1" :max="10" />
+    <InputNumber
+      v-model="position.radius"
+      showButtons
+      buttonLayout="horizontal" :step="1"
+      incrementButtonIcon="pi pi-plus"
+      decrementButtonIcon="pi pi-minus"
+      min="1"
+      max="10"
+      suffix="Km" />
   </section>
 
-  <Button @click="fetchData">trova carburanti</Button>
+  <Button @click="fetchData"
+          class="search-button"
+          disabled="!position.points">
+    <font-awesome-icon icon="fa-regular fa-magnifying-glass-location" />
+    Trova Stazioni
+  </Button>
 
   <section>
-    <Divider align="center">
-      <span class="p-tag">Elenco distributori</span>
-    </Divider>
     <template v-if="errorMessage">
       <p>Attenzione! {{ errorMessage }}</p>
     </template>
@@ -739,3 +767,4 @@ const fetchData = () => {
     </ul>
   </section>
 </template>
+

@@ -1,4 +1,44 @@
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans&display=swap');
+@use "sass:map";
+
+$font-baseurl: "fonts/";
+
+@mixin font-face(
+  $font-name,
+  $font-directory,
+  $font-filename,
+  $font-style,
+  $font-weight
+) {
+  @font-face {
+    font: {
+      family: $font-name;
+      weight: $font-weight;
+      style: $font-style;
+      display: swap;
+    }
+    src: //url($font-baseurl + "#{$font-directory}/" + $font-filename + ".woff") format(".woff"),
+            //url($font-baseurl + "#{$font-directory}/" + $font-filename + ".woff2") format("woff2"),
+            url($font-baseurl + "#{$font-directory}/" + $font-filename + ".ttf") format("truetype"),
+    //url($font-baseurl + "#{$font-directory}/" + $font-filename + ".svg?#webfont") format("svg"),
+    //url($font-baseurl + "#{$font-directory}/" + $font-filename + ".eot"),
+    //url($font-baseurl + "#{$font-directory}/" + $font-filename + ".eot?#iefix") format("embedded-opentype");
+  }
+}
+
+@include font-face("Inter", "inter", "Inter-variable", regular, 100 1000);
+$grey: #617575;
+$green: (
+        "600": #264653,
+        "400":#217D72,
+        "300": #75CCB5,
+);
+$red: #E76F51;
+$orange: #F4A261;
+$yellow: (
+        "500": #F2BC2B,
+        "100": #FCF8ED,
+);
+$white: #FFFFFF;
 
 // Global Styles
 * {
@@ -7,9 +47,9 @@
 
 body {
   margin: 0;
-  color: #3D405B;
-  background: #FDFDFA;
-  font-family: 'Work Sans', sans-serif;
+  color: map.get($green, "600");
+  background: map.get($yellow, "100");
+  font-family: 'Inter', sans-serif;
 }
 
 // Typography
@@ -55,14 +95,51 @@ main {
 }
 
 section {
+  display: flex;
+  flex-flow: row wrap;
   margin: 32px 0;
   padding: 16px;
-  border-radius: 8px;
-  background: #FEFEFD;
-  box-shadow: 0 0 16px 0 rgba(#3D405B, .1);
 
-  &:first-child {
-    margin: 0 0 32px;
+  & h2 {
+    color: map.get($green, "600");
+    font-weight: 700;
+
+    & span {
+      color: $grey;
+      font-weight: 500;
+    }
+  }
+
+  & .gelocalization {
+
+    &__founded-place {
+
+    }
+
+    &__toggler {
+      display: flex;
+      flex-flow: column;
+      align-items: center;
+      width: 100%;
+
+      & p {
+        margin: 6px 0;
+        font: {
+          weight: 600;
+        }
+
+        &.toggle-link {
+          border-bottom: 2px solid map.get($green, "600")
+        }
+      }
+
+    }
+  }
+
+  &.distance {
+    & .p-inputnumber {
+      margin: 12px auto;
+    }
   }
 }
 
@@ -87,10 +164,89 @@ section {
 }
 
 .p-button {
-  background: #81B29A;
-  border: 0;
+  width: 100%;
   padding: 16px 20px;
-  font-size: clamp(1rem, 0.9721rem + 0.1274vw, 1.125rem);
-  font-weight: 500;
-  border-radius: 32px;
+  border: 2px solid map.get($green, "400");
+  border-radius: 16px;
+  background: map.get($green, "400");
+  color: $white;
+  font: {
+    family: "Inter";
+    size: clamp(1rem, 0.9721rem + 0.1274vw, 1.125rem);
+    weight: 600;
+  }
+
+  &.search-button {
+    background-color: $orange;
+    color: map.get($green, "600")
+  }
+}
+
+.p-inputtext {
+  padding: 8px 12px;
+  width: 100%;
+  border: 1px solid $grey;
+  border-radius: 8px;
+  font: {
+    size: clamp(1rem, 0.9721rem + 0.1274vw, 1.125rem);
+    weight: 400
+  }
+}
+
+.p-dropdown {
+  width: 100%;
+
+  &-label {
+
+  }
+
+  &-panel {
+    padding: 16px;
+    background-color: $white;
+    border: 1px solid $grey;
+    border-radius: 8px;
+  }
+
+  &-items {
+    padding-top: 12px;
+  }
+
+  &-item {
+    padding: 4px 0;
+  }
+}
+
+.p-slider {
+  margin: 32px 0;
+  width: 100%;
+  height: 16px;
+  border: 2px solid map.get($green, "600");
+  border-radius: 16px;
+  box-sizing: content-box;
+  background-color: transparent;
+
+  &-range {
+    height: 16px;
+    border-radius: 8px;
+    background-color: map.get($green, "600");
+  }
+}
+
+.p-inputnumber {
+  &-buttons-horizontal {
+    & .p-button {
+      &.p-inputnumber-button-up, &.p-inputnumber-button-down {
+        padding: 0;
+        width: 48px;
+        height: 48px;
+        border: {
+          top-right-radius: 100%;
+          top-left-radius: 100%;
+          bottom-right-radius: 100%;
+          bottom-left-radius: 100%;
+        }
+        color: $white;
+      }
+    }
+  }
 }
