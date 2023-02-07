@@ -4,6 +4,8 @@ import { createPinia } from "pinia";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
+  faPlus,
+  faMinus,
   faLocationDot,
   faHouseBlank,
   faCircleHeart,
@@ -19,6 +21,8 @@ import "./assets/app.scss";
 
 // add icons to the library
 library.add(
+  faPlus,
+  faMinus,
   faLocationDot,
   faHouseBlank,
   faCircleHeart,

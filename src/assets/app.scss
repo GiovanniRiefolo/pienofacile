@@ -101,6 +101,7 @@ section {
   padding: 16px;
 
   & h2 {
+    width: 100%;
     color: map.get($green, "600");
     font-weight: 700;
 
@@ -110,7 +111,7 @@ section {
     }
   }
 
-  &.gelocalization{
+  &.gelocalization {
     margin: 0 0 32px;
 
     & .gelocalization {
@@ -142,9 +143,54 @@ section {
 
 
   &.distance {
-    & .p-inputnumber {
-      margin: 12px auto;
+    & .p-slider {
+      margin: 64px 24px 32px 24px;
     }
+
+    & .distance__radio-input {
+      display: flex;
+      align-items: center;
+      margin: 12px auto;
+      gap: 8px;
+
+      & button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 48px;
+        height: 48px;
+        background-color: map.get($green, "400");
+        border-radius: 100%;
+        border: 4px solid $white;
+        color: $white;
+        font-size: 20px;
+      }
+
+      & input {
+        padding: 0;
+        width: auto;
+        background: transparent;
+        border: none;
+        border-bottom: 2px solid map.get($green, "600");
+        color: map.get($green, "600");
+        font: {
+          size: 1.25rem;
+          weight: 600;
+        }
+        text-align: center;
+      }
+
+      & span {
+        padding-bottom: 6px;
+        margin-left: -4px;
+        color: map.get($green, "600");
+        font: {
+          size: 1.25rem;
+          weight: 600;
+        }
+      }
+    }
+
   }
 }
 
@@ -233,8 +279,20 @@ section {
   &-range {
     height: 16px;
     border-radius: 8px;
-    background-color: map.get($green, "600");
+    background-color: map.get($green, "400");
   }
+
+  &-horizontal {
+    & .p-slider-handle {
+      top: -64px;
+      margin-left: -24px;
+      width: 48px;
+      height: 60px;
+      background-image: url("../assets/marker-distance.svg");
+      background-size: 48px 60px;
+    }
+  }
+
 }
 
 .p-inputnumber {
@@ -252,6 +310,17 @@ section {
         }
         color: $white;
       }
+    }
+
+    & .p-inputtext {
+      width: 80px;
+      background-color: transparent;
+      border: none;
+      color: map.get($green, "600");
+      font: {
+        weight: 600;
+      }
+      text-align: center;
     }
   }
 }
