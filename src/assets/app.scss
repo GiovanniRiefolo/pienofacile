@@ -110,31 +110,36 @@ section {
     }
   }
 
-  & .gelocalization {
+  &.gelocalization{
+    margin: 0 0 32px;
 
-    &__founded-place {
+    & .gelocalization {
 
-    }
+      &__founded-place {
 
-    &__toggler {
-      display: flex;
-      flex-flow: column;
-      align-items: center;
-      width: 100%;
-
-      & p {
-        margin: 6px 0;
-        font: {
-          weight: 600;
-        }
-
-        &.toggle-link {
-          border-bottom: 2px solid map.get($green, "600")
-        }
       }
 
+      &__toggler {
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        width: 100%;
+
+        & p {
+          margin: 6px 0;
+          font: {
+            weight: 600;
+          }
+
+          &.toggle-link {
+            border-bottom: 2px solid map.get($green, "600")
+          }
+        }
+
+      }
     }
   }
+
 
   &.distance {
     & .p-inputnumber {
