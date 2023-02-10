@@ -771,7 +771,11 @@ const fetchData = () => {
     Trova Stazioni
   </Button>
 
-  <MapSearch :map-data="results" />
+  <MapSearch
+    :map-data="results"
+    :zoom="userPosition.radius"
+    :points="userPosition.points"
+  />
 
   <section>
     <template v-if="errorMessage">

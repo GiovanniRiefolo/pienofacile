@@ -1,26 +1,43 @@
 <script setup>
-import { watch } from "vue";
-import "leaflet/dist/leaflet.css";
-import { LMap, LTileLayer } from "@vue-leaflet/vue-leaflet";
+import { watch, ref, onMounted } from "vue";
 
-const props = defineProps(["mapData"]);
+const props = defineProps(["mapData", "zoom", "points"]);
 
 watch(
-  () => props.mapData,
-  (val) => console.log(val)
+  () => [props.mapData, props.points],
+  (data) => {
+    console.log(data);
+    centerMap.value.lat = data[1][0]["lat"];
+    centerMap.value.lng = data[1][0]["lng"];
+  }
 );
 
+onMounted(() => {});
 
+const centerMap = ref({
+  lat: 0,
+  lng: 0,
+});
+const rotation = ref(0);
 </script>
 
 <template>
-  <div style="height:600px; width:800px">
-    <l-map ref="map" v-model:zoom="zoom" :center="[47.41322, -1.219482]">
-      <l-tile-layer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        layer-type="base"
-        name="OpenStreetMap"
-      ></l-tile-layer>
-    </l-map>
+  <div style="height: 600px; width: 800px">
+    <ol-map
+      :loadTilesWhileAnimating="true"
+      :loadTilesWhileInteracting="true"
+      style="height: 400px"
+    >
+      <ol-view
+        ref="view"
+        :center="centerMap.value"
+        :rotation="rotation.value"
+        :zoom="props.zoom"
+      />
+
+      <ol-tile-layer>
+        <ol-source-osm />
+      </ol-tile-layer>
+    </ol-map>
   </div>
 </template>

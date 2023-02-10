@@ -15,6 +15,9 @@ import {
 import App from "./App.vue";
 import router from "./router";
 
+import OpenLayersMap from "vue3-openlayers";
+import "vue3-openlayers/dist/vue3-openlayers.css";
+
 import PrimeVue from "primevue/config";
 
 import "./assets/app.scss";
@@ -34,6 +37,7 @@ const app = createApp(App);
 app.use(createPinia());
 app.use(router);
 app.use(PrimeVue);
+app.use(OpenLayersMap);
 
 app.component("font-awesome-icon", FontAwesomeIcon);
 

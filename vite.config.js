@@ -1,5 +1,3 @@
-import { fileURLToPath, URL } from "node:url";
-
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 
@@ -11,14 +9,15 @@ export default defineConfig({
       "/api/zone": {
         target: "https://carburanti.mise.gov.it/ospzApi/search/zone",
         changeOrigin: true,
-        secure: false,
+        secure: true,
         ws: true,
+        family: 4,
         rewrite: (path) => path.replace(/^\/api\/zone/, ""),
       },
       "/api/reverseGeo": {
         target: "https://nominatim.openstreetmap.org",
         changeOrigin: true,
-        secure: false,
+        secure: true,
         ws: true,
         rewrite: (path) => path.replace(/^\/api\/reverseGeo/, ""),
       },
