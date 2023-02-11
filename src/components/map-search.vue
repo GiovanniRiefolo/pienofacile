@@ -1,43 +1,85 @@
 <script setup>
 import { watch, ref, onMounted } from "vue";
 
-const props = defineProps(["mapData", "zoom", "points"]);
+const props = defineProps(["mapData", "radius", "points"]);
 
 watch(
-  () => [props.mapData, props.points],
+  () => [props.mapData, props.points, props.radius],
   (data) => {
-    console.log(data);
-    centerMap.value.lat = data[1][0]["lat"];
-    centerMap.value.lng = data[1][0]["lng"];
+    // console.log(data);
+    centerMap.value[1] = data[1][0]["lat"];
+    centerMap.value[0] = data[1][0]["lng"];
+    zoom.value = calculateZoom(props.radius)
   }
 );
 
-onMounted(() => {});
-
-const centerMap = ref({
-  lat: 0,
-  lng: 0,
+onMounted(() => {
 });
+
+const centerMap = ref([0, 0]);
 const rotation = ref(0);
+const projection = ref("EPSG:4326");
+const zoom = ref(13);
+
+const calculateZoom = (value) => {
+  const maxValue = 13;
+  const minValue = 11;
+  return maxValue - (value / 10) * (maxValue - minValue);
+}
 </script>
 
 <template>
-  <div style="height: 600px; width: 800px">
-    <ol-map
-      :loadTilesWhileAnimating="true"
-      :loadTilesWhileInteracting="true"
-      style="height: 400px"
-    >
-      <ol-view
-        ref="view"
-        :center="centerMap.value"
-        :rotation="rotation.value"
-        :zoom="props.zoom"
-      />
 
-      <ol-tile-layer>
-        <ol-source-osm />
-      </ol-tile-layer>
-    </ol-map>
-  </div>
+  {{ props.radius }}
+  {{ zoom }}
+
+  <ol-map style="height: 600px"
+          :loadTilesWhileAnimating="true"
+          :loadTilesWhileInteracting="true">
+    <ol-view
+      ref="view"
+      :center="centerMap"
+      :rotation="rotation"
+      :projection="projection"
+      :zoom="zoom"
+    />
+    <ol-overlay :position="centerMap">
+      <template v-slot="slotProps">
+        <div class="overlay-marker">
+
+        </div>
+        <div class="overlay-content">
+          Sei qui!
+        </div>
+      </template>
+    </ol-overlay>
+    <ol-overlay v-for="data in mapData"
+                :position="[data.location.lng,data.location.lat]">
+      <template v-slot="slotProps">
+        <div class="overlay-marker">
+
+        </div>
+        <div class="overlay-content">
+          {{ data.name }}
+        </div>
+      </template>
+    </ol-overlay>
+
+    <ol-tile-layer>
+      <ol-source-osm />
+    </ol-tile-layer>
+  </ol-map>
 </template>
+
+<style lang="scss" scoped>
+.overlay-marker {
+  height: 40px;
+  width: 30px;
+  background: {
+    image: url("./../assets/map-marker.png");
+    repeat: no-repeat;
+    position: center;
+    size: 100%;
+  }
+}
+</style>

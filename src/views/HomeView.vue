@@ -669,10 +669,7 @@ const fetchData = () => {
     <h2><span>Step 1 &mdash; </span>Luogo</h2>
 
     <template
-      v-if="
-        userAddressFormVisibility === false || userPosition.points.length === 0
-      "
-    >
+      v-if="userAddressFormVisibility === false || userPosition.points.length === 0">
       <Button @click="getUserLocation()">
         <font-awesome-icon icon="fa-regular fa-location-dot" />
         Geolocalizzami
@@ -773,8 +770,8 @@ const fetchData = () => {
 
   <MapSearch
     :map-data="results"
-    :zoom="userPosition.radius"
     :points="userPosition.points"
+    :radius="userPosition.radius"
   />
 
   <section>
