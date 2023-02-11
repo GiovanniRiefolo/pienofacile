@@ -13,8 +13,7 @@ watch(
   }
 );
 
-onMounted(() => {
-});
+onMounted(() => {});
 
 const centerMap = ref([0, 0]);
 const rotation = ref(0);
@@ -29,55 +28,61 @@ const calculateZoom = (value) => {
 </script>
 
 <template>
-
   {{ props.radius }}
   {{ zoom }}
+  <div class="map-search__wapper">
+    <ol-map
+      style="height: 700px"
+      :loadTilesWhileAnimating="true"
+      :loadTilesWhileInteracting="true"
+    >
+      <ol-view
+        ref="view"
+        :center="centerMap"
+        :rotation="rotation"
+        :projection="projection"
+        :zoom="zoom"
+      />
 
-  <ol-map style="height: 600px"
-          :loadTilesWhileAnimating="true"
-          :loadTilesWhileInteracting="true">
-    <ol-view
-      ref="view"
-      :center="centerMap"
-      :rotation="rotation"
-      :projection="projection"
-      :zoom="zoom"
-    />
+      <ol-overlay :position="centerMap">
+        <template v-slot="slotProps">
+          <div class="o-marker">
+            <div class="o-marker__icon"></div>
+            <div class="o-marker__info">Sei qui!</div>
+          </div>
+        </template>
+      </ol-overlay>
 
-    <ol-overlay :position="centerMap">
-      <template v-slot="slotProps">
-        <div class="o-marker">
+      <ol-overlay
+        v-for="data in mapData"
+        :position="[data.location.lng, data.location.lat]"
+      >
+        <template v-slot="slotProps">
+          <div class="o-marker"></div>
           <div class="o-marker__icon"></div>
           <div class="o-marker__info">
-            Sei qui!
+            {{ data.name }}
           </div>
-        </div>
+        </template>
+      </ol-overlay>
 
-      </template>
-    </ol-overlay>
-
-    <ol-overlay v-for="data in mapData"
-                :position="[data.location.lng,data.location.lat]">
-      <template v-slot="slotProps">
-        <div class="o-marker">
-
-        </div>
-        <div class="o-marker__icon"></div>
-        <div class="o-marker__info">
-          {{ data.name }}
-        </div>
-      </template>
-    </ol-overlay>
-
-    <ol-tile-layer>
-      <ol-source-osm />
-    </ol-tile-layer>
-  </ol-map>
+      <ol-tile-layer>
+        <ol-source-osm />
+      </ol-tile-layer>
+    </ol-map>
+  </div>
 </template>
 
 <style lang="scss" scoped>
+.map-search {
+  &__wapper {
+    padding: 16px;
+    background-color: white;
+  }
+}
+
 .o-marker {
-  &__icon{
+  &__icon {
     width: 30px;
     height: 40px;
     background: {
@@ -87,7 +92,8 @@ const calculateZoom = (value) => {
       size: 100%;
     }
   }
-  &__info{
+
+  &__info {
     background: white;
     padding: 8px;
     border-radius: 6px;
