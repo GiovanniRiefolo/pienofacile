@@ -12,6 +12,10 @@ import {
   faMagnifyingGlassLocation,
 } from "@fortawesome/pro-regular-svg-icons";
 
+import {
+  faSpinnerThird,
+} from "@fortawesome/pro-solid-svg-icons";
+
 import App from "./App.vue";
 import router from "./router";
 
@@ -29,7 +33,8 @@ library.add(
   faLocationDot,
   faHouseBlank,
   faCircleHeart,
-  faMagnifyingGlassLocation
+  faMagnifyingGlassLocation,
+  faSpinnerThird
 );
 
 const app = createApp(App);

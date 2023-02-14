@@ -13,7 +13,8 @@ watch(
   }
 );
 
-onMounted(() => {});
+onMounted(() => {
+});
 
 const centerMap = ref([0, 0]);
 const rotation = ref(0);
@@ -25,6 +26,13 @@ const calculateZoom = (value) => {
   const minValue = 11;
   return maxValue - (value / 10) * (maxValue - minValue);
 };
+
+const currencyFormatter = (value) => {
+  return value.toLocaleString({
+    style: "currency",
+    currency: "EUR"
+  });
+};
 </script>
 
 <template>
@@ -32,7 +40,7 @@ const calculateZoom = (value) => {
   {{ zoom }}
   <div class="map-search__wapper">
     <ol-map
-      style="height: 700px"
+      style="height: 80svh"
       :loadTilesWhileAnimating="true"
       :loadTilesWhileInteracting="true"
     >
@@ -62,6 +70,18 @@ const calculateZoom = (value) => {
           <div class="o-marker__icon"></div>
           <div class="o-marker__info">
             {{ data.name }}
+            <h5>Servito</h5>
+            <ul>
+              <template v-for="fuel in data.fuels">
+                <li v-if="fuel.isSelf === false">{{ fuel.name }}: {{ fuel.price }}</li>
+              </template>
+            </ul>
+            <h5>Self</h5>
+            <ul>
+              <template v-for="fuel in data.fuels">
+                <li v-if="fuel.isSelf === true">{{ fuel.name }}: {{ fuel.price }}</li>
+              </template>
+            </ul>
           </div>
         </template>
       </ol-overlay>

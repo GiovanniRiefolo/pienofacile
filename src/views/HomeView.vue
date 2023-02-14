@@ -9,12 +9,13 @@ import MapSearch from "../components/map-search.vue";
 
 const userPosition = ref({
   points: [],
-  radius: 5,
+  radius: 5
 });
 
 const errorMessage = ref();
 
-const loading = ref(false);
+const loadingGeo = ref(false);
+const loadingMap = ref(false);
 
 const address = ref({
   street: null,
@@ -22,574 +23,574 @@ const address = ref({
   city: null,
   county: null,
   country: "Italia",
-  postalcode: null,
+  postalcode: null
 });
 
 const provences = [
   {
     nome: "Agrigento",
     sigla: "AG",
-    regione: "Sicilia",
+    regione: "Sicilia"
   },
   {
     nome: "Alessandria",
     sigla: "AL",
-    regione: "Piemonte",
+    regione: "Piemonte"
   },
   {
     nome: "Ancona",
     sigla: "AN",
-    regione: "Marche",
+    regione: "Marche"
   },
   {
     nome: "Arezzo",
     sigla: "AR",
-    regione: "Toscana",
+    regione: "Toscana"
   },
   {
     nome: "Ascoli Piceno",
     sigla: "AP",
-    regione: "Marche",
+    regione: "Marche"
   },
   {
     nome: "Asti",
     sigla: "AT",
-    regione: "Piemonte",
+    regione: "Piemonte"
   },
   {
     nome: "Avellino",
     sigla: "AV",
-    regione: "Campania",
+    regione: "Campania"
   },
   {
     nome: "Bari",
     sigla: "BA",
-    regione: "Puglia",
+    regione: "Puglia"
   },
   {
     nome: "Barletta-Andria-Trani",
     sigla: "BT",
-    regione: "Puglia",
+    regione: "Puglia"
   },
   {
     nome: "Belluno",
     sigla: "BL",
-    regione: "Veneto",
+    regione: "Veneto"
   },
   {
     nome: "Benevento",
     sigla: "BN",
-    regione: "Campania",
+    regione: "Campania"
   },
   {
     nome: "Bergamo",
     sigla: "BG",
-    regione: "Lombardia",
+    regione: "Lombardia"
   },
   {
     nome: "Biella",
     sigla: "BI",
-    regione: "Piemonte",
+    regione: "Piemonte"
   },
   {
     nome: "Bologna",
     sigla: "BO",
-    regione: "Emilia-Romagna",
+    regione: "Emilia-Romagna"
   },
   {
     nome: "Bolzano/Bozen",
     sigla: "BZ",
-    regione: "Trentino-Alto Adige/Südtirol",
+    regione: "Trentino-Alto Adige/Südtirol"
   },
   {
     nome: "Brescia",
     sigla: "BS",
-    regione: "Lombardia",
+    regione: "Lombardia"
   },
   {
     nome: "Brindisi",
     sigla: "BR",
-    regione: "Puglia",
+    regione: "Puglia"
   },
   {
     nome: "Cagliari",
     sigla: "CA",
-    regione: "Sardegna",
+    regione: "Sardegna"
   },
   {
     nome: "Caltanissetta",
     sigla: "CL",
-    regione: "Sicilia",
+    regione: "Sicilia"
   },
   {
     nome: "Campobasso",
     sigla: "CB",
-    regione: "Molise",
+    regione: "Molise"
   },
   {
     nome: "Carbonia-Iglesias",
     sigla: "CI",
-    regione: "Sardegna",
+    regione: "Sardegna"
   },
   {
     nome: "Caserta",
     sigla: "CE",
-    regione: "Campania",
+    regione: "Campania"
   },
   {
     nome: "Catania",
     sigla: "CT",
-    regione: "Sicilia",
+    regione: "Sicilia"
   },
   {
     nome: "Catanzaro",
     sigla: "CZ",
-    regione: "Calabria",
+    regione: "Calabria"
   },
   {
     nome: "Chieti",
     sigla: "CH",
-    regione: "Abruzzo",
+    regione: "Abruzzo"
   },
   {
     nome: "Como",
     sigla: "CO",
-    regione: "Lombardia",
+    regione: "Lombardia"
   },
   {
     nome: "Cosenza",
     sigla: "CS",
-    regione: "Calabria",
+    regione: "Calabria"
   },
   {
     nome: "Cremona",
     sigla: "CR",
-    regione: "Lombardia",
+    regione: "Lombardia"
   },
   {
     nome: "Crotone",
     sigla: "KR",
-    regione: "Calabria",
+    regione: "Calabria"
   },
   {
     nome: "Cuneo",
     sigla: "CN",
-    regione: "Piemonte",
+    regione: "Piemonte"
   },
   {
     nome: "Enna",
     sigla: "EN",
-    regione: "Sicilia",
+    regione: "Sicilia"
   },
   {
     nome: "Fermo",
     sigla: "FM",
-    regione: "Marche",
+    regione: "Marche"
   },
   {
     nome: "Ferrara",
     sigla: "FE",
-    regione: "Emilia-Romagna",
+    regione: "Emilia-Romagna"
   },
   {
     nome: "Firenze",
     sigla: "FI",
-    regione: "Toscana",
+    regione: "Toscana"
   },
   {
     nome: "Foggia",
     sigla: "FG",
-    regione: "Puglia",
+    regione: "Puglia"
   },
   {
     nome: "Forlì-Cesena",
     sigla: "FC",
-    regione: "Emilia-Romagna",
+    regione: "Emilia-Romagna"
   },
   {
     nome: "Frosinone",
     sigla: "FR",
-    regione: "Lazio",
+    regione: "Lazio"
   },
   {
     nome: "Genova",
     sigla: "GE",
-    regione: "Liguria",
+    regione: "Liguria"
   },
   {
     nome: "Gorizia",
     sigla: "GO",
-    regione: "Friuli-Venezia Giulia",
+    regione: "Friuli-Venezia Giulia"
   },
   {
     nome: "Grosseto",
     sigla: "GR",
-    regione: "Toscana",
+    regione: "Toscana"
   },
   {
     nome: "Imperia",
     sigla: "IM",
-    regione: "Liguria",
+    regione: "Liguria"
   },
   {
     nome: "Isernia",
     sigla: "IS",
-    regione: "Molise",
+    regione: "Molise"
   },
   {
     nome: "L'Aquila",
     sigla: "AQ",
-    regione: "Abruzzo",
+    regione: "Abruzzo"
   },
   {
     nome: "La Spezia",
     sigla: "SP",
-    regione: "Liguria",
+    regione: "Liguria"
   },
   {
     nome: "Latina",
     sigla: "LT",
-    regione: "Lazio",
+    regione: "Lazio"
   },
   {
     nome: "Lecce",
     sigla: "LE",
-    regione: "Puglia",
+    regione: "Puglia"
   },
   {
     nome: "Lecco",
     sigla: "LC",
-    regione: "Lombardia",
+    regione: "Lombardia"
   },
   {
     nome: "Livorno",
     sigla: "LI",
-    regione: "Toscana",
+    regione: "Toscana"
   },
   {
     nome: "Lodi",
     sigla: "LO",
-    regione: "Lombardia",
+    regione: "Lombardia"
   },
   {
     nome: "Lucca",
     sigla: "LU",
-    regione: "Toscana",
+    regione: "Toscana"
   },
   {
     nome: "Macerata",
     sigla: "MC",
-    regione: "Marche",
+    regione: "Marche"
   },
   {
     nome: "Mantova",
     sigla: "MN",
-    regione: "Lombardia",
+    regione: "Lombardia"
   },
   {
     nome: "Massa-Carrara",
     sigla: "MS",
-    regione: "Toscana",
+    regione: "Toscana"
   },
   {
     nome: "Matera",
     sigla: "MT",
-    regione: "Basilicata",
+    regione: "Basilicata"
   },
   {
     nome: "Medio Campidano",
     sigla: "VS",
-    regione: "Sardegna",
+    regione: "Sardegna"
   },
   {
     nome: "Messina",
     sigla: "ME",
-    regione: "Sicilia",
+    regione: "Sicilia"
   },
   {
     nome: "Milano",
     sigla: "MI",
-    regione: "Lombardia",
+    regione: "Lombardia"
   },
   {
     nome: "Modena",
     sigla: "MO",
-    regione: "Emilia-Romagna",
+    regione: "Emilia-Romagna"
   },
   {
     nome: "Monza e della Brianza",
     sigla: "MB",
-    regione: "Lombardia",
+    regione: "Lombardia"
   },
   {
     nome: "Napoli",
     sigla: "NA",
-    regione: "Campania",
+    regione: "Campania"
   },
   {
     nome: "Novara",
     sigla: "NO",
-    regione: "Piemonte",
+    regione: "Piemonte"
   },
   {
     nome: "Nuoro",
     sigla: "NU",
-    regione: "Sardegna",
+    regione: "Sardegna"
   },
   {
     nome: "Ogliastra",
     sigla: "OG",
-    regione: "Sardegna",
+    regione: "Sardegna"
   },
   {
     nome: "Olbia-Tempio",
     sigla: "OT",
-    regione: "Sardegna",
+    regione: "Sardegna"
   },
   {
     nome: "Oristano",
     sigla: "OR",
-    regione: "Sardegna",
+    regione: "Sardegna"
   },
   {
     nome: "Padova",
     sigla: "PD",
-    regione: "Veneto",
+    regione: "Veneto"
   },
   {
     nome: "Palermo",
     sigla: "PA",
-    regione: "Sicilia",
+    regione: "Sicilia"
   },
   {
     nome: "Parma",
     sigla: "PR",
-    regione: "Emilia-Romagna",
+    regione: "Emilia-Romagna"
   },
   {
     nome: "Pavia",
     sigla: "PV",
-    regione: "Lombardia",
+    regione: "Lombardia"
   },
   {
     nome: "Perugia",
     sigla: "PG",
-    regione: "Umbria",
+    regione: "Umbria"
   },
   {
     nome: "Pesaro e Urbino",
     sigla: "PU",
-    regione: "Marche",
+    regione: "Marche"
   },
   {
     nome: "Pescara",
     sigla: "PE",
-    regione: "Abruzzo",
+    regione: "Abruzzo"
   },
   {
     nome: "Piacenza",
     sigla: "PC",
-    regione: "Emilia-Romagna",
+    regione: "Emilia-Romagna"
   },
   {
     nome: "Pisa",
     sigla: "PI",
-    regione: "Toscana",
+    regione: "Toscana"
   },
   {
     nome: "Pistoia",
     sigla: "PT",
-    regione: "Toscana",
+    regione: "Toscana"
   },
   {
     nome: "Pordenone",
     sigla: "PN",
-    regione: "Friuli-Venezia Giulia",
+    regione: "Friuli-Venezia Giulia"
   },
   {
     nome: "Potenza",
     sigla: "PZ",
-    regione: "Basilicata",
+    regione: "Basilicata"
   },
   {
     nome: "Prato",
     sigla: "PO",
-    regione: "Toscana",
+    regione: "Toscana"
   },
   {
     nome: "Ragusa",
     sigla: "RG",
-    regione: "Sicilia",
+    regione: "Sicilia"
   },
   {
     nome: "Ravenna",
     sigla: "RA",
-    regione: "Emilia-Romagna",
+    regione: "Emilia-Romagna"
   },
   {
     nome: "Reggio di Calabria",
     sigla: "RC",
-    regione: "Calabria",
+    regione: "Calabria"
   },
   {
     nome: "Reggio nell'Emilia",
     sigla: "RE",
-    regione: "Emilia-Romagna",
+    regione: "Emilia-Romagna"
   },
   {
     nome: "Rieti",
     sigla: "RI",
-    regione: "Lazio",
+    regione: "Lazio"
   },
   {
     nome: "Rimini",
     sigla: "RN",
-    regione: "Emilia-Romagna",
+    regione: "Emilia-Romagna"
   },
   {
     nome: "Roma",
     sigla: "RM",
-    regione: "Lazio",
+    regione: "Lazio"
   },
   {
     nome: "Rovigo",
     sigla: "RO",
-    regione: "Veneto",
+    regione: "Veneto"
   },
   {
     nome: "Salerno",
     sigla: "SA",
-    regione: "Campania",
+    regione: "Campania"
   },
   {
     nome: "Sassari",
     sigla: "SS",
-    regione: "Sardegna",
+    regione: "Sardegna"
   },
   {
     nome: "Savona",
     sigla: "SV",
-    regione: "Liguria",
+    regione: "Liguria"
   },
   {
     nome: "Siena",
     sigla: "SI",
-    regione: "Toscana",
+    regione: "Toscana"
   },
   {
     nome: "Siracusa",
     sigla: "SR",
-    regione: "Sicilia",
+    regione: "Sicilia"
   },
   {
     nome: "Sondrio",
     sigla: "SO",
-    regione: "Lombardia",
+    regione: "Lombardia"
   },
   {
     nome: "Taranto",
     sigla: "TA",
-    regione: "Puglia",
+    regione: "Puglia"
   },
   {
     nome: "Teramo",
     sigla: "TE",
-    regione: "Abruzzo",
+    regione: "Abruzzo"
   },
   {
     nome: "Terni",
     sigla: "TR",
-    regione: "Umbria",
+    regione: "Umbria"
   },
   {
     nome: "Torino",
     sigla: "TO",
-    regione: "Piemonte",
+    regione: "Piemonte"
   },
   {
     nome: "Trapani",
     sigla: "TP",
-    regione: "Sicilia",
+    regione: "Sicilia"
   },
   {
     nome: "Trento",
     sigla: "TN",
-    regione: "Trentino-Alto Adige/Südtirol",
+    regione: "Trentino-Alto Adige/Südtirol"
   },
   {
     nome: "Treviso",
     sigla: "TV",
-    regione: "Veneto",
+    regione: "Veneto"
   },
   {
     nome: "Trieste",
     sigla: "TS",
-    regione: "Friuli-Venezia Giulia",
+    regione: "Friuli-Venezia Giulia"
   },
   {
     nome: "Udine",
     sigla: "UD",
-    regione: "Friuli-Venezia Giulia",
+    regione: "Friuli-Venezia Giulia"
   },
   {
     nome: "Valle d'Aosta/Vallée d'Aoste",
     sigla: "AO",
-    regione: "Valle d'Aosta/Vallée d'Aoste",
+    regione: "Valle d'Aosta/Vallée d'Aoste"
   },
   {
     nome: "Varese",
     sigla: "VA",
-    regione: "Lombardia",
+    regione: "Lombardia"
   },
   {
     nome: "Venezia",
     sigla: "VE",
-    regione: "Veneto",
+    regione: "Veneto"
   },
   {
     nome: "Verbano-Cusio-Ossola",
     sigla: "VB",
-    regione: "Piemonte",
+    regione: "Piemonte"
   },
   {
     nome: "Vercelli",
     sigla: "VC",
-    regione: "Piemonte",
+    regione: "Piemonte"
   },
   {
     nome: "Verona",
     sigla: "VR",
-    regione: "Veneto",
+    regione: "Veneto"
   },
   {
     nome: "Vibo Valentia",
     sigla: "VV",
-    regione: "Calabria",
+    regione: "Calabria"
   },
   {
     nome: "Vicenza",
     sigla: "VI",
-    regione: "Veneto",
+    regione: "Veneto"
   },
   {
     nome: "Viterbo",
     sigla: "VT",
-    regione: "Lazio",
-  },
+    regione: "Lazio"
+  }
 ];
 
 const getUserLocation = () =>
   new Promise((res, rej) => {
-    loading.value = true;
+    loadingGeo.value = true;
     navigator.geolocation.getCurrentPosition(
       (position) => {
         let currentPosition = {
           lat: position.coords.latitude,
-          lng: position.coords.longitude,
+          lng: position.coords.longitude
         };
         userPosition.value.points = [];
         userPosition.value.points.push(currentPosition);
-        loading.value = false;
+        loadingGeo.value = false;
         res(position);
       },
       (error) => {
@@ -600,32 +601,34 @@ const getUserLocation = () =>
   });
 
 const getUserLocationFromAddress = () => {
+  loadingGeo.value = true;
   // https://nominatim.org/release-docs/develop/api/Search/
   axios
     .post(
       "api/reverseGeo" +
-        "search?street=" +
-        address.value.street +
-        "+" +
-        address.value.housenumber +
-        "&city=" +
-        address.value.city +
-        "&country=" +
-        address.value.country +
-        "&county=" +
-        address.value.county +
-        "&postalcode=" +
-        address.value.postalcode +
-        "&format=jsonv2",
+      "search?street=" +
+      address.value.street +
+      "+" +
+      address.value.housenumber +
+      "&city=" +
+      address.value.city +
+      "&country=" +
+      address.value.country +
+      "&county=" +
+      address.value.county +
+      "&postalcode=" +
+      address.value.postalcode +
+      "&format=jsonv2",
       {}
     )
     .then((response) => {
       let currentPosition = {
         lat: response.data[0].lat,
-        lng: response.data[0].lon,
+        lng: response.data[0].lon
       };
       userPosition.value.points = [];
       userPosition.value.points.push(currentPosition);
+      loadingGeo.value = false;
     })
     .catch((e) => console.log(e));
 };
@@ -647,7 +650,7 @@ const updateRadio = (val) => {
 const results = ref([]);
 
 const fetchData = () => {
-  loading.value = true;
+  loadingMap.value = true;
   axios
     .post("api/zone", userPosition.value)
     .then((response) => {
@@ -656,48 +659,64 @@ const fetchData = () => {
       } else {
         console.log("Non sono riuscito a recuperare i risultati");
       }
-      loading.value = false;
+      loadingMap.value = false;
     })
     .catch((e) => console.log(e));
 };
 </script>
 
 <template>
-  <div class="loader" v-show="loading === true">Sto caricando</div>
-
   <section class="gelocalization">
     <h2><span>Step 1 &mdash; </span>Luogo</h2>
 
     <template
-      v-if="userAddressFormVisibility === false || userPosition.points.length === 0">
-      <Button @click="getUserLocation()">
-        <font-awesome-icon icon="fa-regular fa-location-dot" />
-        Geolocalizzami
-      </Button>
-
-      <div class="gelocalization__toggler">
-        <p>oppure</p>
-        <p class="toggle-link" @click="toggleUserAddressForm()">
+      v-if="userPosition.points.length === 0">
+      <template v-if="loadingGeo === true">
+        <div class="geolocalization__loading">
+          <h2>
+            <font-awesome-icon icon="fa-spin fa-solid fa-spinner-third" spin />
+            Sto cercando ...
+          </h2>
+        </div>
+      </template>
+      <template v-else>
+        <Button @click="getUserLocation()">
           <font-awesome-icon icon="fa-regular fa-location-dot" />
-          Inserisci la posizione
-        </p>
-      </div>
+          Geolocalizzami
+        </Button>
+        <div class="gelocalization__toggler">
+          <p>oppure</p>
+          <p class="toggle-link" @click="toggleUserAddressForm()">
+            <font-awesome-icon icon="fa-regular fa-location-dot" />
+            Inserisci la posizione
+          </p>
+        </div>
+      </template>
     </template>
 
     <template v-if="userPosition.points.length > 0">
       <div class="geolocalization__founded-place">
-        <div>Trovato!</div>
+        <figure>
+          <source
+            srcset="
+            src/assets/trovato.png 1x,
+            src/assets/trovato@2x.png 2x" />
+          <img src="src/assets/trovato.png">
+        </figure>
         <div>
-          <p v-for="point in userPosition.points" v-bind:key="point">
-            <strong>Latitudine:</strong> {{ point.lat }},<br />
-            <strong>Longidutine:</strong>{{ point.lng }}
-          </p>
-          <p
-            class="geolocalization__change-manually"
-            @click="toggleUserAddressForm()"
-          >
-            Modifica i dati manualmente
-          </p>
+          <h3>Trovato!</h3>
+          <div>
+            <p v-for="point in userPosition.points" v-bind:key="point">
+              <strong>Latitudine:</strong> {{ point.lat }},<br />
+              <strong>Longidutine:</strong>{{ point.lng }}
+            </p>
+            <p
+              class="geolocalization__change-manually"
+              @click="toggleUserAddressForm()"
+            >
+              Modifica i dati manualmente
+            </p>
+          </div>
         </div>
       </div>
     </template>
@@ -740,7 +759,9 @@ const fetchData = () => {
       placeholder="cap"
       autocomplete="true"
     />
-    <Button @click="getUserLocationFromAddress()">Recupera posizione</Button>
+    <Button @click="getUserLocationFromAddress()">
+      Recupera posizione
+    </Button>
   </section>
 
   <section class="distance">

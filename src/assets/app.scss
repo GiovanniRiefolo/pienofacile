@@ -97,11 +97,12 @@ main {
 section {
   display: flex;
   flex-flow: row wrap;
-  margin: 32px 0;
+  margin: 0;
   padding: 16px;
 
   & h2 {
     width: 100%;
+    margin: 0 0 16px;
     color: map.get($green, "600");
     font-weight: 700;
 
@@ -112,13 +113,29 @@ section {
   }
 
   &.gelocalization {
-    margin: 0 0 32px;
-
-    & .gelocalization {
+    & .geolocalization {
 
       &__founded-place {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        width: 100%;
 
+        & figure {
+          margin: 0;
+          padding: 0 16px;
+        }
+
+        & > div {
+          padding: 16px;
+          width: 100%;
+        }
+
+        & h3{
+          margin: 0;
+        }
       }
+
 
       &__toggler {
         display: flex;
@@ -138,9 +155,17 @@ section {
         }
 
       }
+
+      &__loading {
+        padding: 16px;
+        width: 100%;
+
+        & h2 {
+          text-align: center
+        }
+      }
     }
   }
-
 
   &.distance {
     & .p-slider {
@@ -228,8 +253,11 @@ section {
   }
 
   &.search-button {
+    margin: 16px;
+    width: calc(100% - 32px);
     background-color: $orange;
-    color: map.get($green, "600")
+    color: map.get($green, "600");
+    box-sizing: border-box;
   }
 }
 
