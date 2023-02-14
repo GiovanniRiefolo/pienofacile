@@ -799,8 +799,10 @@ const fetchData = () => {
     <template v-if="errorMessage">
       <p>Attenzione! {{ errorMessage }}</p>
     </template>
-    <ul>
-      <li :key="result.id" v-for="result in results">
+    <ul class="filling-station-list">
+      <li :id="result.id"
+          :key="result.id"
+          v-for="result in results">
         <h3>{{ result.name }}</h3>
         <ul>
           <li>Brand: {{ result.brand }}</li>

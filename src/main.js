@@ -13,6 +13,8 @@ import {
 } from "@fortawesome/pro-regular-svg-icons";
 
 import {
+  faCarSide,
+  faGasPump,
   faSpinnerThird,
 } from "@fortawesome/pro-solid-svg-icons";
 
@@ -28,6 +30,8 @@ import "./assets/app.scss";
 
 // add icons to the library
 library.add(
+  faCarSide,
+  faGasPump,
   faPlus,
   faMinus,
   faLocationDot,

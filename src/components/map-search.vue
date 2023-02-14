@@ -1,5 +1,7 @@
 <script setup>
 import { watch, ref, onMounted } from "vue";
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
 
 const props = defineProps(["mapData", "radius", "points"]);
 
@@ -33,12 +35,36 @@ const currencyFormatter = (value) => {
     currency: "EUR"
   });
 };
+
+const selectedStationData = ref();
+const showSelectedStationData = ref(false);
+const showInfo = data => {
+  console.log("click");
+  selectedStationData.value = data;
+  showSelectedStationData.value = true;
+};
+
 </script>
 
 <template>
-  {{ props.radius }}
-  {{ zoom }}
+
+
   <div class="map-search__wapper">
+
+    <div class="map-search__result-info"
+         v-if="showSelectedStationData === true">
+      <h4>{{ selectedStationData.name }}</h4>
+      <p>{{ selectedStationData.address }}</p>
+      <ul>
+        <template v-for="fuel in selectedStationData.fuels">
+          <li v-if="(fuel.name === 'Benzina' || fuel.name === 'Gasolio') && fuel.isSelf === true">
+            <p>{{ fuel.name }} {{ fuel.price }}</p>
+          </li>
+        </template>
+      </ul>
+      <a :href="'#' + selectedStationData.id">vai alla voce in elenco</a>
+    </div>
+
     <ol-map
       style="height: 80svh"
       :loadTilesWhileAnimating="true"
@@ -55,8 +81,9 @@ const currencyFormatter = (value) => {
       <ol-overlay :position="centerMap">
         <template v-slot="slotProps">
           <div class="o-marker">
-            <div class="o-marker__icon"></div>
-            <div class="o-marker__info">Sei qui!</div>
+            <div class="o-marker__icon user-location">
+              <font-awesome-icon icon="fa-solid fa-car-side" />
+            </div>
           </div>
         </template>
       </ol-overlay>
@@ -64,24 +91,12 @@ const currencyFormatter = (value) => {
       <ol-overlay
         v-for="data in mapData"
         :position="[data.location.lng, data.location.lat]"
+        @click="showInfo(data)"
       >
         <template v-slot="slotProps">
           <div class="o-marker"></div>
-          <div class="o-marker__icon"></div>
-          <div class="o-marker__info">
-            {{ data.name }}
-            <h5>Servito</h5>
-            <ul>
-              <template v-for="fuel in data.fuels">
-                <li v-if="fuel.isSelf === false">{{ fuel.name }}: {{ fuel.price }}</li>
-              </template>
-            </ul>
-            <h5>Self</h5>
-            <ul>
-              <template v-for="fuel in data.fuels">
-                <li v-if="fuel.isSelf === true">{{ fuel.name }}: {{ fuel.price }}</li>
-              </template>
-            </ul>
+          <div class="o-marker__icon">
+            <font-awesome-icon icon="fa-solid fa-gas-pump" />
           </div>
         </template>
       </ol-overlay>
@@ -96,6 +111,16 @@ const currencyFormatter = (value) => {
 <style lang="scss" scoped>
 .map-search {
   &__wapper {
+    position: relative;
+    padding: 16px;
+    background-color: white;
+  }
+
+  &__result-info {
+    position: absolute;
+    z-index: 999;
+    top: 0;
+    width: calc(100vw - 32px);
     padding: 16px;
     background-color: white;
   }
@@ -103,20 +128,26 @@ const currencyFormatter = (value) => {
 
 .o-marker {
   &__icon {
-    width: 30px;
-    height: 40px;
-    background: {
-      image: url("./../assets/map-marker.png");
-      repeat: no-repeat;
-      position: center;
-      size: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    width: 34px;
+    height: 34px;
+    background-color: #217D72;
+    border: 2px solid #264653;
+    border-radius: 100%;
+    box-shadow: 4px 4px 0 0 rgb(0 0 0 / 30%);
+    box-sizing: border-box;
+
+    color: white;
+
+    &.user-location {
+      border-color: #ad391c;
+      background-color: #E76F51;
+      color: black;
     }
   }
 
-  &__info {
-    background: white;
-    padding: 8px;
-    border-radius: 6px;
-  }
 }
 </style>
