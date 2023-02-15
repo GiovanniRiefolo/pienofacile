@@ -5,7 +5,9 @@ import Slider from "primevue/slider";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import Dropdown from "primevue/dropdown";
+
 import MapSearch from "../components/map-search.vue";
+import FillingStationList from "../components/filling-station-list.vue";
 
 const userPosition = ref({
   points: [],
@@ -789,33 +791,17 @@ const fetchData = () => {
     Trova Stazioni
   </Button>
 
+  <template v-if="errorMessage">
+    <!-- // TODO: Test this error message -->
+    <p>Attenzione! {{ errorMessage }}</p>
+  </template>
+
   <MapSearch
     :map-data="results"
     :points="userPosition.points"
     :radius="userPosition.radius"
   />
 
-  <section>
-    <template v-if="errorMessage">
-      <p>Attenzione! {{ errorMessage }}</p>
-    </template>
-    <ul class="filling-station-list">
-      <li :id="result.id"
-          :key="result.id"
-          v-for="result in results">
-        <h3>{{ result.name }}</h3>
-        <ul>
-          <li>Brand: {{ result.brand }}</li>
-          <li>
-            Prezzi:
-            <ul>
-              <li :key="fuel.fuelId" v-for="fuel in result.fuels">
-                {{ fuel.name }}: {{ fuel.price }}
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </section>
+  <FillingStationList :stationList="results" />
+
 </template>

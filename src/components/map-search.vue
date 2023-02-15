@@ -48,8 +48,9 @@ const showInfo = data => {
 
 <template>
 
-
-  <div class="map-search__wapper">
+  <div id="map"
+       class="map-search__wapper"
+       v-if="props.mapData.length > 0">
 
     <div class="map-search__result-info"
          v-if="showSelectedStationData === true">
@@ -58,11 +59,20 @@ const showInfo = data => {
       <ul>
         <template v-for="fuel in selectedStationData.fuels">
           <li v-if="(fuel.name === 'Benzina' || fuel.name === 'Gasolio') && fuel.isSelf === true">
-            <p>{{ fuel.name }} {{ fuel.price }}</p>
+            <p>{{ fuel.name }}<br><span>SELF</span><strong>{{ fuel.price }} &euro;</strong></p>
           </li>
         </template>
       </ul>
-      <a :href="'#' + selectedStationData.id">vai alla voce in elenco</a>
+      <div class="map-search__result-info__links">
+        <a class="map-search__result-info__link navigate"
+           :href="'#' + selectedStationData.id">
+          <font-awesome-icon icon="fa-solid fa-route" />
+          Naviga fino a</a>
+        <a class="map-search__result-info__link check-prices"
+           :href="'#' + selectedStationData.id">
+          <font-awesome-icon icon="fa-solid fa-euro" />
+          Vedi altri prezzi</a>
+      </div>
     </div>
 
     <ol-map
@@ -119,10 +129,86 @@ const showInfo = data => {
   &__result-info {
     position: absolute;
     z-index: 999;
-    top: 0;
-    width: calc(100vw - 32px);
+    top: 32px;
+    left: -50%;
+    right: -50%;
+    margin: auto;
     padding: 16px;
+    width: calc(100vw - 64px);
+    border: 2px solid #264653;
+    box-shadow: 8px 8px 0 0 rgb(0 0 0 / 30%);
     background-color: white;
+
+    & h4 {
+      margin: 0 0 8px;
+    }
+
+    & p {
+      font-size: .875rem
+    }
+
+    & ul {
+      display: flex;
+      width: 100%;
+      flex-flow: row wrap;
+      margin: 8px 0 16px;
+      padding: 0;
+
+      & li {
+        width: 50%;
+        padding: 6px 0;
+        list-style-type: none;
+
+        & p {
+          margin: 0;
+
+          & span {
+            padding: 2px 4px;
+            background-color: #264653;
+            border-radius: 4px;
+            margin-right: 4px;
+            color: white;
+            font: {
+              weight: 600;
+              size: .65rem;
+            }
+            letter-spacing: 1px;
+          }
+        }
+      }
+    }
+
+    &__links{
+      display: flex;
+      flex-flow: row nowrap;
+      gap: 4px;
+      justify-content: space-between;
+    }
+    &__link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      padding: 6px 8px;
+      background-color: #217D72;
+      color: white;
+      font: {
+        weight: 500;
+        size: .875rem
+      }
+      text-decoration: none;
+      border-radius: 6px;
+
+      &.navigate{
+        background-color: white;
+        color: #217D72;
+      }
+      &.check-prices{
+        background-color: #217D72;
+        color: white;
+      }
+    }
+
   }
 }
 

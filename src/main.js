@@ -16,6 +16,9 @@ import {
   faCarSide,
   faGasPump,
   faSpinnerThird,
+  faListRadio,
+  faEuro,
+  faRoute,
 } from "@fortawesome/pro-solid-svg-icons";
 
 import App from "./App.vue";
@@ -38,7 +41,10 @@ library.add(
   faHouseBlank,
   faCircleHeart,
   faMagnifyingGlassLocation,
-  faSpinnerThird
+  faSpinnerThird,
+  faListRadio,
+  faEuro,
+  faRoute
 );
 
 const app = createApp(App);

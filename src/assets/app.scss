@@ -219,14 +219,6 @@ section {
   }
 }
 
-.filling-station-list{
-  & li{
-    &:target{
-      background-color: white;
-    }
-  }
-}
-
 // Custom component styles
 .p-divider {
   margin: 16px 0;
