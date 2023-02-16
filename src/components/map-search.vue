@@ -42,6 +42,7 @@ const showInfo = (data) => {
   selectedStationData.value = data;
   showSelectedStationData.value = true;
 };
+const closeSelectedStationData = () => (showSelectedStationData.value = false);
 </script>
 
 <template>
@@ -50,6 +51,14 @@ const showInfo = (data) => {
       class="map-search__result-info"
       v-if="showSelectedStationData === true"
     >
+      <button
+        @click="closeSelectedStationData"
+        class="map-search__result-info__close"
+        type="button"
+      >
+        <font-awesome-icon icon="fa-regular fa-times" /> Chiudi
+      </button>
+
       <h4>{{ selectedStationData.name }}</h4>
       <p>{{ selectedStationData.address }}</p>
       <ul>
@@ -229,6 +238,17 @@ const showInfo = (data) => {
         background-color: #217d72;
         color: white;
       }
+    }
+
+    &__close {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 8px;
+      margin: 0 0 0 auto;
+      width: fit-content;
+      border: none;
+      background: none;
     }
   }
 }

@@ -10,6 +10,7 @@ import {
   faHouseBlank,
   faCircleHeart,
   faMagnifyingGlassLocation,
+  faTimes,
 } from "@fortawesome/pro-regular-svg-icons";
 
 import {
@@ -44,7 +45,8 @@ library.add(
   faSpinnerThird,
   faListRadio,
   faEuro,
-  faRoute
+  faRoute,
+  faTimes
 );
 
 const app = createApp(App);
