@@ -15,8 +15,7 @@ watch(
   }
 );
 
-onMounted(() => {
-});
+onMounted(() => {});
 
 const centerMap = ref([0, 0]);
 const rotation = ref(0);
@@ -32,46 +31,67 @@ const calculateZoom = (value) => {
 const currencyFormatter = (value) => {
   return value.toLocaleString({
     style: "currency",
-    currency: "EUR"
+    currency: "EUR",
   });
 };
 
 const selectedStationData = ref();
 const showSelectedStationData = ref(false);
-const showInfo = data => {
+const showInfo = (data) => {
   console.log("click");
   selectedStationData.value = data;
   showSelectedStationData.value = true;
 };
-
 </script>
 
 <template>
-
-  <div id="map"
-       class="map-search__wapper"
-       v-if="props.mapData.length > 0">
-
-    <div class="map-search__result-info"
-         v-if="showSelectedStationData === true">
+  <div id="map" class="map-search__wapper" v-if="props.mapData.length > 0">
+    <div
+      class="map-search__result-info"
+      v-if="showSelectedStationData === true"
+    >
       <h4>{{ selectedStationData.name }}</h4>
       <p>{{ selectedStationData.address }}</p>
       <ul>
         <template v-for="fuel in selectedStationData.fuels">
-          <li v-if="(fuel.name === 'Benzina' || fuel.name === 'Gasolio') && fuel.isSelf === true">
-            <p>{{ fuel.name }}<br><span>SELF</span><strong>{{ fuel.price }} &euro;</strong></p>
+          <li
+            v-bind:key="fuel.id"
+            v-if="
+              (fuel.name === 'Benzina' || fuel.name === 'Gasolio') &&
+              fuel.isSelf === true
+            "
+          >
+            <p>
+              {{ fuel.name }}<br />
+              <span>SELF</span><strong>{{ fuel.price }} &euro;</strong>
+            </p>
+          </li>
+          <li
+            v-bind:key="fuel.id"
+            v-else-if="fuel.name === 'Benzina' || fuel.name === 'Gasolio'"
+          >
+            <p>
+              {{ fuel.name }}<br />
+              <strong>{{ fuel.price }} &euro;</strong>
+            </p>
           </li>
         </template>
       </ul>
       <div class="map-search__result-info__links">
-        <a class="map-search__result-info__link navigate"
-           :href="'#' + selectedStationData.id">
+        <a
+          class="map-search__result-info__link navigate"
+          :href="'#' + selectedStationData.id"
+        >
           <font-awesome-icon icon="fa-solid fa-route" />
-          Naviga fino a</a>
-        <a class="map-search__result-info__link check-prices"
-           :href="'#' + selectedStationData.id">
+          Naviga fino a</a
+        >
+        <a
+          class="map-search__result-info__link check-prices"
+          :href="'#' + selectedStationData.id"
+        >
           <font-awesome-icon icon="fa-solid fa-euro" />
-          Vedi altri prezzi</a>
+          Vedi altri prezzi</a
+        >
       </div>
     </div>
 
@@ -144,7 +164,7 @@ const showInfo = data => {
     }
 
     & p {
-      font-size: .875rem
+      font-size: 0.875rem;
     }
 
     & ul {
@@ -170,7 +190,7 @@ const showInfo = data => {
             color: white;
             font: {
               weight: 600;
-              size: .65rem;
+              size: 0.65rem;
             }
             letter-spacing: 1px;
           }
@@ -178,37 +198,38 @@ const showInfo = data => {
       }
     }
 
-    &__links{
+    &__links {
       display: flex;
       flex-flow: row nowrap;
       gap: 4px;
       justify-content: space-between;
     }
+
     &__link {
       display: flex;
       align-items: center;
       gap: 8px;
       width: fit-content;
       padding: 6px 8px;
-      background-color: #217D72;
+      background-color: #217d72;
       color: white;
       font: {
         weight: 500;
-        size: .875rem
+        size: 0.875rem;
       }
       text-decoration: none;
       border-radius: 6px;
 
-      &.navigate{
+      &.navigate {
         background-color: white;
-        color: #217D72;
+        color: #217d72;
       }
-      &.check-prices{
-        background-color: #217D72;
+
+      &.check-prices {
+        background-color: #217d72;
         color: white;
       }
     }
-
   }
 }
 
@@ -220,7 +241,7 @@ const showInfo = data => {
     padding: 8px;
     width: 34px;
     height: 34px;
-    background-color: #217D72;
+    background-color: #217d72;
     border: 2px solid #264653;
     border-radius: 100%;
     box-shadow: 4px 4px 0 0 rgb(0 0 0 / 30%);
@@ -230,10 +251,9 @@ const showInfo = data => {
 
     &.user-location {
       border-color: #ad391c;
-      background-color: #E76F51;
+      background-color: #e76f51;
       color: black;
     }
   }
-
 }
 </style>

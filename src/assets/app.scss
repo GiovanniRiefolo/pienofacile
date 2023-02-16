@@ -48,7 +48,7 @@ $white: #FFFFFF;
 body {
   margin: 0;
   color: map.get($green, "600");
-  background: map.get($yellow, "100");
+  background: $white;
   font-family: 'Inter', sans-serif;
 }
 
