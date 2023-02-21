@@ -6,6 +6,16 @@ import { FilterMatchMode, FilterOperator } from "primevue/api";
 
 const props = defineProps(["stationList"]);
 
+const getLogo = brand => {
+  let _src
+  switch (brand) {
+    case brand === 'Tamoil':
+      _src = 'src/assets/tamoil-small.png'
+    break;
+  }
+  return _src
+}
+
 </script>
 <template>
 
@@ -16,6 +26,8 @@ const props = defineProps(["stationList"]);
         <h3>{{ result.name }}</h3>
         <ul>
           <li>Brand: {{ result.brand }}</li>
+          <img :src="getLogo(result.brand)"
+               :alt="'Logo ' + result.brand"/>
           <li>
             Prezzi:
             <ul>
