@@ -112,9 +112,8 @@ section {
     }
   }
 
-  &.gelocalization {
+  &.geolocalization {
     & .geolocalization {
-
       &__founded-place {
         display: flex;
         flex-flow: row nowrap;
@@ -136,20 +135,30 @@ section {
         }
       }
 
+      &__change-manually {
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: none;
+        background-color: map.get($green, "600");
+        color: $white;
+      }
 
       &__toggler {
         display: flex;
-        flex-flow: column;
+        flex-flow: column nowrap;
         align-items: center;
         width: 100%;
+        gap: 12px;
+        margin: 16px 0 0;
 
         & p {
-          margin: 6px 0;
+          margin: 0;
           font: {
             weight: 600;
           }
 
           &.toggle-link {
+            cursor: pointer;
             border-bottom: 2px solid map.get($green, "600")
           }
         }
@@ -191,9 +200,10 @@ section {
         font-size: 20px;
       }
 
-      & input {
+      & input[type="number"] {
         padding: 0;
         width: auto;
+        max-width: 48px;
         background: transparent;
         border: none;
         border-bottom: 2px solid map.get($green, "600");
@@ -203,6 +213,7 @@ section {
           weight: 600;
         }
         text-align: center;
+        -moz-appearance:textfield;
       }
 
       & span {

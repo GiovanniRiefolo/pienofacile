@@ -668,7 +668,7 @@ const fetchData = () => {
 </script>
 
 <template>
-  <section class="gelocalization">
+  <section class="geolocalization">
     <h2><span>Step 1 &mdash; </span>Luogo</h2>
 
     <template v-if="userPosition.points.length === 0">
@@ -685,7 +685,7 @@ const fetchData = () => {
           <font-awesome-icon icon="fa-regular fa-location-dot" />
           Geolocalizzami
         </Button>
-        <div class="gelocalization__toggler">
+        <div class="geolocalization__toggler">
           <p>oppure</p>
           <p class="toggle-link" @click="toggleUserAddressForm()">
             <font-awesome-icon icon="fa-regular fa-location-dot" />
@@ -711,14 +711,14 @@ const fetchData = () => {
           <div>
             <p v-for="point in userPosition.points" v-bind:key="point">
               <strong>Latitudine:</strong> {{ point.lat }},<br />
-              <strong>Longidutine:</strong>{{ point.lng }}
+              <strong>Longidutine:</strong> {{ point.lng }}
             </p>
-            <p
+            <button
               class="geolocalization__change-manually"
               @click="toggleUserAddressForm()"
             >
-              Modifica i dati manualmente
-            </p>
+              Modifica manualmente
+            </button>
           </div>
         </div>
       </div>
