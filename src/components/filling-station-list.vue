@@ -7,13 +7,19 @@ import { FilterMatchMode, FilterOperator } from "primevue/api";
 const props = defineProps(["stationList"]);
 
 const getLogo = (brand) => {
-  let _src;
+  let src = "";
   switch (brand) {
-    case brand === "Tamoil":
-      _src = "src/assets/tamoil-small.png";
+    case "Tamoil":
+      src = "./src/assets/images/tamoil-small.png";
+      break;
+    case "Q8":
+      src = "./src/assets/images/q8-medium.png";
+      break;
+    case "AgipEni":
+      src = "./src/assets/images/agip-eni-small.png";
       break;
   }
-  return _src;
+  return src;
 };
 </script>
 <template>
