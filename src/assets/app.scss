@@ -26,7 +26,10 @@ $font-baseurl: "fonts/";
 }
 
 @include font-face("Inter", "inter", "Inter-variable", regular, 100 1000);
-$grey: #617575;
+$grey: (
+        "600": #617575,
+        "400": #bebcb6,
+);
 $green: (
         "600": #264653,
         "400":#217D72,
@@ -107,41 +110,13 @@ section {
     font-weight: 700;
 
     & span {
-      color: $grey;
+      color: map.get($grey, "600");
       font-weight: 500;
     }
   }
 
   &.geolocalization {
     & .geolocalization {
-      &__founded-place {
-        display: flex;
-        flex-flow: row nowrap;
-        align-items: center;
-        width: 100%;
-
-        & figure {
-          margin: 0;
-          padding: 0 16px;
-        }
-
-        & > div {
-          padding: 16px;
-          width: 100%;
-        }
-
-        & h3 {
-          margin: 0;
-        }
-      }
-
-      &__change-manually {
-        padding: 8px 12px;
-        border-radius: 8px;
-        border: none;
-        background-color: map.get($green, "600");
-        color: $white;
-      }
 
       &__toggler {
         display: flex;
@@ -173,6 +148,37 @@ section {
           text-align: center
         }
       }
+    }
+  }
+
+  &.founded-place {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    width: 100%;
+    margin: 0 0 16px;
+
+    & figure {
+      margin: 0;
+      padding: 0 16px;
+    }
+
+    & > div {
+      padding: 16px;
+      width: 100%;
+    }
+
+    & h3 {
+      margin: 0;
+    }
+
+    & .founded-place__change-manually {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: none;
+      background-color: map.get($green, "600");
+      color: $white;
+
     }
   }
 
@@ -217,7 +223,7 @@ section {
       }
 
       & span {
-        padding-bottom: 6px;
+        padding-bottom: 4px;
         margin-left: -4px;
         color: map.get($green, "600");
         font: {
@@ -230,9 +236,19 @@ section {
   }
 
   &.address__form {
-    input, select {
+    gap: 16px;
+
+    & > .p-inputtext, & > .p-dropdown {
       margin: 4px 0;
       height: 48px;
+    }
+
+    & .p-inputtext#street {
+      width: calc(70% - 8px);
+    }
+
+    & .p-inputtext#housenumber {
+      width: calc(30% - 8px);
     }
   }
 }
@@ -277,12 +293,20 @@ section {
     color: map.get($green, "600");
     box-sizing: border-box;
   }
+
+  &[disabled] {
+    background: transparent;
+    color: map.get($green, "400");
+    opacity: .5;
+  }
 }
 
 .p-inputtext {
+  display: flex;
+  align-items: center;
   padding: 8px 12px;
   width: 100%;
-  border: 1px solid $grey;
+  border: 1px solid map.get($grey, "600");
   border-radius: 8px;
   font: {
     size: clamp(1rem, 0.9721rem + 0.1274vw, 1.125rem);
@@ -291,7 +315,46 @@ section {
 }
 
 .p-dropdown {
+  position: relative;
   width: 100%;
+
+  &.p-overlay-open {
+    & .p-dropdown-trigger {
+      transform: rotate(180deg);
+    }
+  }
+
+  &-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: absolute;
+    z-index: 999;
+    right: 12px;
+    top: -50%;
+    bottom: -50%;
+    margin: auto;
+    height: 32px;
+    width: 32px;
+    background-image: url(/src/assets/images/chevron-down-regular.svg);
+    background-size: 14px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-blend-mode: color;
+    opacity: 0.75;
+  }
+
+  &-header {
+    & span {
+      display: block;
+      position: relative;
+      padding: 4px 0 8px;
+      font-size: .875rem;
+      opacity: .75;
+    }
+  }
+
 
   &-label {
 
@@ -300,22 +363,29 @@ section {
   &-panel {
     padding: 16px;
     background-color: $white;
-    border: 1px solid $grey;
+    border: 1px solid map.get($grey, "600");
     border-radius: 8px;
   }
 
   &-items {
     padding-top: 12px;
 
-    &-wrapper ~ span {
-      display: block;
-      position: relative;
-      padding: 16px 0 0;
-      font-size: .875rem;
-      opacity: .75;
+    &-wrapper {
+      overflow: auto;
+      border-top: 1px solid map.get($grey, "400");
+      border-bottom: 1px solid map.get($grey, "400");
+      margin: 12px 0;
 
-      &.p-hidden-focusable {
-        padding: 0;
+      & ~ span {
+        display: block;
+        position: relative;
+        padding: 16px 0 0;
+        font-size: .875rem;
+        opacity: .75;
+
+        &.p-hidden-focusable {
+          padding: 0;
+        }
       }
     }
   }

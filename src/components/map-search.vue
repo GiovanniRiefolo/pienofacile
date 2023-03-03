@@ -46,7 +46,7 @@ const closeSelectedStationData = () => (showSelectedStationData.value = false);
 </script>
 
 <template>
-  <div id="map" class="map-search__wapper" v-if="props.mapData.length > 0">
+  <div id="map" class="map-search__wapper" v-if="props.mapData.length">
     <div
       class="map-search__result-info"
       v-if="showSelectedStationData === true"

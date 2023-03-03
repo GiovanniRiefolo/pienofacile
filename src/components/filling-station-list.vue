@@ -18,8 +18,38 @@ const getLogo = (brand) => {
     case "AgipEni":
       src = "./src/assets/images/agip-eni-small.png";
       break;
+    case "Esso":
+      src = "./src/assets/images/esso-small.png";
+      break;
+    case "Api-Ip":
+      src = "./src/assets/images/apiip-small.png";
+      break;
+    case "SanMarcoPetroli":
+      src = "./src/assets/images/logo-smp-spa.svg";
+      break;
+    case "OilItalia":
+      src = "./src/assets/images/logo-oil-italia.png";
+      break;
+    case "CONAD":
+      src = "./src/assets/images/conad-logo-small.png";
+      break;
+    case "PompeBianche":
+      src = "./src/assets/images/pompebianche.png";
+      break;
+    case "Repsol":
+      src = "./src/assets/images/repsol-logo-small.png";
+      break;
   }
   return src;
+};
+
+const currencyFormatter = value => {
+  return value.toLocaleString("it-IT", {
+      style: "currency",
+      currency: "EUR",
+      minimumFractionDigits: 3
+    }
+  );
 };
 </script>
 <template>
@@ -27,15 +57,33 @@ const getLogo = (brand) => {
     <li :id="result.id" :key="result.id" v-for="result in props.stationList">
       <h3>{{ result.name }}</h3>
       <ul>
-        <li>Brand: {{ result.brand }}</li>
-        <img :src="getLogo(result.brand)" :alt="'Logo ' + result.brand" />
         <li>
-          Prezzi:
-          <ul>
-            <li :key="fuel.fuelId" v-for="fuel in result.fuels">
-              {{ fuel.name }}: {{ fuel.price }}
-            </li>
-          </ul>
+          <figure>
+            <img :src="getLogo(result.brand)" :alt="'Logo ' + result.brand" width="48" />
+            <figcaption>
+              {{ result.brand }}
+            </figcaption>
+          </figure>
+        </li>
+        <li>
+          <table>
+            <thead>
+            <tr>
+              <td>Carburante</td>
+              <td>Prezzo</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr :key="fuel.fuelId" v-for="fuel in result.fuels">
+              <td>
+                {{ fuel.name }}
+              </td>
+              <td>
+                {{ currencyFormatter(fuel.price) }}
+              </td>
+            </tr>
+            </tbody>
+          </table>
         </li>
       </ul>
     </li>
@@ -55,6 +103,47 @@ const getLogo = (brand) => {
     padding: 16px;
     border: 2px solid transparent;
     list-style-type: none;
+
+    figure {
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+
+      & img {
+        width: auto;
+        max-height: 32px;
+        max-width: 48px;
+      }
+    }
+
+    & > ul {
+      padding: 0;
+
+      & > li {
+        list-style-type: none;
+
+        table {
+          margin: 16px 0;
+          width: 100%;
+
+          & tr td {
+            padding: 6px 8px;
+          }
+
+          & thead {
+            & tr td {
+              background: #264653;
+              color: white;
+              font: {
+                weight: 600
+              }
+            }
+          }
+        }
+      }
+    }
 
     &:target {
       background-color: #fcf8ed;
