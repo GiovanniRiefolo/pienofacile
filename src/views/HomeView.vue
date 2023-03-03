@@ -725,7 +725,7 @@ const fetchData = () => {
     </template>
   </section>
 
-  <section v-show="userAddressFormVisibility === true">
+  <section class="address__form" v-show="userAddressFormVisibility === true">
     <InputText
       type="text"
       v-model="address.street"
@@ -762,7 +762,7 @@ const fetchData = () => {
       placeholder="cap"
       autocomplete="true"
     />
-    <Button @click="getUserLocationFromAddress()"> Recupera posizione </Button>
+    <Button @click="getUserLocationFromAddress()"> Recupera posizione</Button>
   </section>
 
   <section class="distance">

@@ -130,7 +130,7 @@ section {
           width: 100%;
         }
 
-        & h3{
+        & h3 {
           margin: 0;
         }
       }
@@ -213,7 +213,7 @@ section {
           weight: 600;
         }
         text-align: center;
-        -moz-appearance:textfield;
+        -moz-appearance: textfield;
       }
 
       & span {
@@ -227,6 +227,13 @@ section {
       }
     }
 
+  }
+
+  &.address__form {
+    input, select {
+      margin: 4px 0;
+      height: 48px;
+    }
   }
 }
 
@@ -299,6 +306,18 @@ section {
 
   &-items {
     padding-top: 12px;
+
+    &-wrapper ~ span {
+      display: block;
+      position: relative;
+      padding: 16px 0 0;
+      font-size: .875rem;
+      opacity: .75;
+
+      &.p-hidden-focusable {
+        padding: 0;
+      }
+    }
   }
 
   &-item {
