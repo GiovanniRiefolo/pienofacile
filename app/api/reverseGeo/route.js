@@ -1,8 +1,10 @@
-export default function GET(req, res) {
+export default function POST(req, res) {
   fetch("https://nominatim.openstreetmap.org/", {
     method: "POST",
-    body: reqhttps://codesandbox.io/p/devbox/pienofacile-dev-k4mtc7?file=%2Fapp%2Fapi%2FreverseGeo%2Froute.js%3A7%2C21
+    body: JSON.stringify(req),
   })
-  .then(response => response.json())
-  .then(response => )
-}https://codesandbox.io/p/devbox/pienofacile-dev-k4mtc7
+    .then((response) => response.json())
+    .then((response) => {
+      console.log(response);
+    });
+}
