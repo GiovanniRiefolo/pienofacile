@@ -1,3 +1,10 @@
+import { ServiceStations } from "./components/service-stations";
+import { ServiceStationsProvider } from "./contexts/service-stations-context";
+
 export default async function Page() {
-  return <h1>Hello world!</h1>;
+  return (
+    <ServiceStationsProvider>
+      <ServiceStations />
+    </ServiceStationsProvider>
+  );
 }
