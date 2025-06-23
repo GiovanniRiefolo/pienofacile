@@ -1,5 +1,7 @@
 const nextConfig = {
-  /* config options here */
+  compilerOptions: {
+    baseUrl: "",
+  },
 };
 
 module.exports = nextConfig;
