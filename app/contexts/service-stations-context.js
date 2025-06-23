@@ -2,14 +2,15 @@
 
 import { useState, createContext } from "react";
 
-export const ServiceStationsContext = createContext();
+export const ServiceStationsContext = createContext("");
 
-export const ServiceStationsProvider = ({ children }) => {
+export default function ServiceStationsProvider({ children }) {
   const [serviceStationsList, setServiceStationsList] = useState([]);
 
   const fetchStationsList = () => {
     fetch("/api/zone");
   };
+
   return (
     <ServiceStationsContext.Provider
       value={{ serviceStationsList, setServiceStationsList }}
@@ -17,4 +18,4 @@ export const ServiceStationsProvider = ({ children }) => {
       {children}
     </ServiceStationsContext.Provider>
   );
-};
+}
