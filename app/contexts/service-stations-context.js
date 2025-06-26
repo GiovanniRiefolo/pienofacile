@@ -6,6 +6,7 @@ export const ServiceStationsContext = createContext("");
 
 export default function ServiceStationsProvider({ children }) {
   const [serviceStationsList, setServiceStationsList] = useState([]);
+  const [position, setPosition] = useState(null);
 
   const fetchStationsList = () => {
     fetch("/api/zone");
@@ -13,7 +14,7 @@ export default function ServiceStationsProvider({ children }) {
 
   return (
     <ServiceStationsContext.Provider
-      value={{ serviceStationsList, setServiceStationsList }}
+      value={{ serviceStationsList, setServiceStationsList, position, setPosition }}
     >
       {children}
     </ServiceStationsContext.Provider>
