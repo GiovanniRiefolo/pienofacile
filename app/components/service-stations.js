@@ -1,35 +1,15 @@
 "use client";
 
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { ServiceStationsContext } from "../contexts/service-stations-context";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-
-import "leaflet/dist/leaflet.css";
-
-const positionIcon = L.icon({
-  iconUrl: "/marker@2x.png",
-  iconSize: [40, 54], // dimensioni tipiche dei marker Leaflet
-  iconAnchor: [8, 0], // punto dove il marker è "ancorato"
-  popupAnchor: [14, -12], // posizione relativa del popup
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-  shadowSize: [76, 54],
-});
-
-const stationIcon = L.icon({
-  iconUrl: "/marker.png",
-  iconSize: [22, 30], // dimensioni tipiche dei marker Leaflet
-  iconAnchor: [8, 16], // punto dove il marker è "ancorato"
-  popupAnchor: [1, -28], // posizione relativa del popup
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-  shadowSize: [40, 32],
-});
+import { Map } from "../components/map.js"
 
 export const ServiceStations = () => {
-  const { serviceStationsList, setServiceStationsList } = useContext(
+  const { serviceStationsList, setServiceStationsList, position, setPosition } = useContext(
     ServiceStationsContext
   );
   const [radius, setRadius] = useState(5);
-  const [position, setPosition] = useState([45.0703155, 7.6868552]);
+  const [address, setAddress] = useState('')
 
   const getServiceStations = () => {
     fetch("api/zone", {
@@ -48,29 +28,15 @@ export const ServiceStations = () => {
 
   return (
     <>
-      <MapContainer center={position} zoom={13} style={{ height: "500px" }}>
-        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        <Marker position={position} icon={positionIcon}>
-          <Popup>A popup message on the marker.</Popup>
-        </Marker>
-
-        {serviceStationsList &&
-          serviceStationsList.map((station) => (
-            <Marker
-              key={station.id}
-              position={[station.location.lat, station.location.lng]}
-              icon={stationIcon}
-            >
-              <Popup>
-                {station.name}
-                {station.brand && station.brand !== station.name && (
-                  <> - ({station.brand})</>
-                )}
-              </Popup>
-            </Marker>
-          ))}
-      </MapContainer>
-
+    
+      <section>
+        <label>Indirizzo</label>
+        <input type="search" value={address} onChange={(e) => setAddress(e.target.value)} />
+        <button type="button">Cerca</button>
+      </section>
+    
+    <Map />
+    <label>Distanza {radius ? radius : '0'} Km</label>
       <input
         type="range"
         id="radius"
@@ -103,6 +69,7 @@ export const ServiceStations = () => {
                   ))}
                 </tbody>
               </table>
+              {station.insertDate}
             </li>
           ))}
       </ul>

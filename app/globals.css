@@ -19,3 +19,8 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.map{
+  padding: 16px; 
+  border: 2px solid #000;
+}
