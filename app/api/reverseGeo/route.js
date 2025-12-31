@@ -1,4 +1,4 @@
-export default function POST(req, res) {
+export default function POST(req) {
   fetch("https://nominatim.openstreetmap.org/", {
     method: "POST",
     body: JSON.stringify(req),
