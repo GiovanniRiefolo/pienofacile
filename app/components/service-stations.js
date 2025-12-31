@@ -2,14 +2,14 @@
 
 import { useState, useContext, useEffect } from "react";
 import { ServiceStationsContext } from "../contexts/service-stations-context";
-import { Map } from "../components/map.js"
+import { Map } from "../components/map.js";
+import { Slider } from "primereact/slider";
 
 export const ServiceStations = () => {
-  const { serviceStationsList, setServiceStationsList, position, setPosition } = useContext(
-    ServiceStationsContext
-  );
+  const { serviceStationsList, setServiceStationsList, position, setPosition } =
+    useContext(ServiceStationsContext);
   const [radius, setRadius] = useState(5);
-  const [address, setAddress] = useState('')
+  const [address, setAddress] = useState("");
 
   const getServiceStations = () => {
     fetch("api/zone", {
@@ -28,22 +28,26 @@ export const ServiceStations = () => {
 
   return (
     <>
-    
       <section>
         <label>Indirizzo</label>
-        <input type="search" value={address} onChange={(e) => setAddress(e.target.value)} />
+        <input
+          type="search"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+        />
         <button type="button">Cerca</button>
       </section>
-    
-    <Map />
-    <label>Distanza {radius ? radius : '0'} Km</label>
-      <input
-        type="range"
-        id="radius"
+
+      <Map />
+      <label>Distanza {radius ? radius : "0"} Km</label>
+      <Slider
+        value={radius}
+        onChange={(e) => setRadius(e.target.value)}
+        htmlId="radius"
         min="0"
         max="10"
-        onChange={(e) => setRadius(e.target.value)}
       />
+
       <button onClick={() => getServiceStations()}>cerca</button>
       <ul>
         {serviceStationsList &&
