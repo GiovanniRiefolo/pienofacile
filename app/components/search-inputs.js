@@ -1,7 +1,7 @@
 "use client";
 
 import { Slider } from "primereact/slider";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { ServiceStationsContext } from "../contexts/service-stations-context";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
