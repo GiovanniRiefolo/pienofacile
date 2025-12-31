@@ -13,6 +13,17 @@ export const ServiceStations = () => {
   const { serviceStationsList, loadingServiceStations } = useContext(
     ServiceStationsContext
   );
+
+  const openToGMaps = (lat, lng) => {
+    if (window !== undefined) {
+      window.open(
+        `https://maps.google.com/?q=${lat},${lng}`,
+        "_blank",
+        "noopener,noreferrer"
+      );
+    }
+  };
+
   return (
     <main className="container flex flex-column gap-4">
       <SearchInputs />
@@ -40,11 +51,7 @@ export const ServiceStations = () => {
                     outlined
                     size="small"
                     onClick={() =>
-                      window.open(
-                        `https://maps.google.com/?q=${station.location.lat},${station.location.lng}`,
-                        "_blank",
-                        "noopener,noreferrer"
-                      )
+                      openToGMaps(station.location.lat, station.location.lng)
                     }
                   />
                 </div>
