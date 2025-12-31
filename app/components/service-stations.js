@@ -1,82 +1,51 @@
 "use client";
 
-import { useState, useContext, useEffect } from "react";
-import { ServiceStationsContext } from "../contexts/service-stations-context";
-import { Map } from "../components/map.js";
-import { Slider } from "primereact/slider";
+import {useContext} from "react";
+import {ServiceStationsContext} from "../contexts/service-stations-context";
+import {Map} from "../components/map.js";
+import {SearchInputs} from "./search-inputs";
+import {DataTable} from "primereact/datatable";
+import {Column} from "primereact/column";
+import {Card} from "primereact/card";
+import {Chip} from "primereact/chip";
+import {ProgressSpinner} from "primereact/progressspinner";
+import {Button} from "primereact/button";
 
 export const ServiceStations = () => {
-  const { serviceStationsList, setServiceStationsList, position, setPosition } =
-    useContext(ServiceStationsContext);
-  const [radius, setRadius] = useState(5);
-  const [address, setAddress] = useState("");
-
-  const getServiceStations = () => {
-    fetch("api/zone", {
-      method: "POST",
-      body: JSON.stringify({
-        points: [{ lat: position[0], lng: position[1] }],
-        radius: radius,
-      }),
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        if (response.status === 200)
-          setServiceStationsList(response.data.results);
-      });
-  };
-
-  return (
-    <>
-      <section>
-        <label>Indirizzo</label>
-        <input
-          type="search"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-        />
-        <button type="button">Cerca</button>
-      </section>
-
-      <Map />
-      <label>Distanza {radius ? radius : "0"} Km</label>
-      <Slider
-        value={radius}
-        onChange={(e) => setRadius(e.target.value)}
-        htmlId="radius"
-        min="0"
-        max="10"
-      />
-
-      <button onClick={() => getServiceStations()}>cerca</button>
-      <ul>
-        {serviceStationsList &&
-          serviceStationsList.map((station) => (
-            <li key={station.id}>
-              {station.name}
-              {station.brand && station.brand !== station.name && (
-                <> - ({station.brand})</>
-              )}
-              <table>
-                <thead>
-                  <td>Carburante</td>
-                  <td>Prezzo</td>
-                  <td>Self</td>
-                </thead>
-                <tbody>
-                  {station.fuels.map((fuel) => (
-                    <tr>
-                      <td>{fuel.name}</td>
-                      <td>{fuel.price}</td>
-                      <td>{fuel.isSelf ? "Si" : "No"}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              {station.insertDate}
-            </li>
-          ))}
-      </ul>
-    </>
-  );
+    const {serviceStationsList, loadingServiceStations} =
+        useContext(ServiceStationsContext);
+    return (
+        <main className="container flex flex-column gap-4">
+            <SearchInputs/>
+            <Map/>
+            <section className="flex flex-column gap-2">
+                {loadingServiceStations && <ProgressSpinner style={{width: '50px', height: '50px'}} strokeWidth="4" aria-label="Caricamento in corso" />}
+                {serviceStationsList &&
+                    serviceStationsList.map((station) => (
+                        <Card footer={
+                            <div className="flex flex-row gap-2 align-items-center justify-content-between">
+                                <Chip label={new Date(station.insertDate).toLocaleDateString()}
+                                      icon="pi pi-calendar"/>
+                                <Button
+                                    label="Apri Mappa"
+                                    icon="pi pi-map-marker"
+                                    outlined
+                                    size="small"
+                                    onClick={() => window.open(`https://maps.google.com/?q=${station.location.lat},${station.location.lng}`, '_blank', 'noopener,noreferrer')}
+                                />
+                            </div>
+                        } key={station.id} title={<>{station.name} </>}
+                              subTitle={<>{station.brand} - {station.distance && <>{station.distance.toFixed(2)} Km</>} </>}>
+                            {station.fuels && station.fuels.map((fuel, index) =>
+                                <div className="flex flex-row gap-2 align-items-center py-1" key={index}>
+                                    <h4 className="m-0">{fuel.name}</h4>
+                                    <p className="m-0">Servito {fuel.prices.served}€</p> -
+                                    <p className="m-0">Self {fuel.prices.self}€</p>
+                                </div>
+                            )}
+                        </Card>
+                    ))}
+            </section>
+        </main>
+    );
 };

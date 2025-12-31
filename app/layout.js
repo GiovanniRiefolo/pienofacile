@@ -1,4 +1,4 @@
-import "primereact/resources/themes/lara-light-cyan/theme.css";
+import "./globals.css"
 
 export default function RootLayout({ children }) {
   return (
