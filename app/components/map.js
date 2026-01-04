@@ -3,16 +3,17 @@ import { ServiceStationsContext } from "../contexts/service-stations-context";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 
 import "leaflet/dist/leaflet.css";
+import "../leaflet-theme.css";
 import { Skeleton } from "primereact/skeleton";
 
-export const Map = () => {
+export default function Map(){
   const { serviceStationsList, position, setPosition } = useContext(
     ServiceStationsContext
   );
   // const [geoData, setGeoData] = useState({});
 
   const positionIcon = L.icon({
-    iconUrl: "/marker@2x.png",
+    iconUrl: "/marker-position.png",
     iconSize: [40, 54],
     iconAnchor: [8, 0],
     popupAnchor: [14, -12],
@@ -21,7 +22,7 @@ export const Map = () => {
   });
 
   const stationIcon = L.icon({
-    iconUrl: "/marker.png",
+    iconUrl: "/marker-station.png",
     iconSize: [22, 30],
     iconAnchor: [8, 16],
     popupAnchor: [1, -28],

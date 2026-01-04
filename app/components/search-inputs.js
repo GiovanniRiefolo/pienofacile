@@ -1,7 +1,7 @@
 "use client";
 
 import { Slider } from "primereact/slider";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ServiceStationsContext } from "../contexts/service-stations-context";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
@@ -16,7 +16,7 @@ export const SearchInputs = () => {
     getServiceStations,
     loadingServiceStations,
   } = useContext(ServiceStationsContext);
-  // const [directAddress, setDirectAddress] = useState(false);
+  const [directAddress, setDirectAddress] = useState(false);
   return (
     <div className="flex flex-column">
       <section className="flex flex-column align-items-center gap-4">

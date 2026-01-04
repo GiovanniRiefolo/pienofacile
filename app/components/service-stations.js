@@ -2,12 +2,14 @@
 
 import { useContext } from "react";
 import { ServiceStationsContext } from "../contexts/service-stations-context";
-import { Map } from "../components/map.js";
 import { SearchInputs } from "./search-inputs";
 import { Card } from "primereact/card";
 import { Chip } from "primereact/chip";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { Button } from "primereact/button";
+import dynamic from "next/dynamic";
+
+const Map = dynamic(() => import("../components/map.js"), { ssr: false });
 
 export const ServiceStations = () => {
   const { serviceStationsList, loadingServiceStations } = useContext(
@@ -39,6 +41,7 @@ export const ServiceStations = () => {
         {serviceStationsList &&
           serviceStationsList.map((station) => (
             <Card
+              // className=""
               footer={
                 <div className="flex flex-row gap-2 align-items-center justify-content-between">
                   <Chip
@@ -64,6 +67,7 @@ export const ServiceStations = () => {
                   {station.distance && <>{station.distance.toFixed(2)} Km</>}{" "}
                 </>
               }
+              className=" "
             >
               {station.fuels &&
                 station.fuels.map((fuel, index) => (
