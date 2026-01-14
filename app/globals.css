@@ -1,10 +1,8 @@
-@import "primeflex/primeflex.css";
-@import "primereact/resources/themes/lara-light-purple/theme.css";
-@import "primeicons/primeicons.css";
-
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --accent: #7efc68;
+  --border: 2px solid #000;
 }
 
 body {

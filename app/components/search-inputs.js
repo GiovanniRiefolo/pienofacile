@@ -1,74 +1,89 @@
 "use client";
 
-import {Slider} from "primereact/slider";
-import {useContext, useState} from "react";
-import {ServiceStationsContext} from "../contexts/service-stations-context";
-import {Button} from "primereact/button";
-import {InputText} from "primereact/inputtext";
-import {FloatLabel} from "primereact/floatlabel";
-import {InputSwitch} from "primereact/inputswitch";
+import { useContext, useState } from "react";
+import { ServiceStationsContext } from "../contexts/service-stations-context";
+import styles from "../app.module.css";
 
 export const SearchInputs = () => {
-    const {
-        address,
-        setAddress,
-        radius,
-        setRadius,
-        getServiceStations,
-        loadingServiceStations,
-    } = useContext(ServiceStationsContext);
-    const [directAddress, setDirectAddress] = useState(false);
-    return (
-        <div className="flex flex-column gap-4">
-            <section className="flex flex-row w-full justify-content-between gap-2 align-items-center">
-                <div>
-                    PienoFacile
-                </div>
-                <div className="flex flex-row justify-content-end align-items-center gap-2">
-                    <label>Indirizzo diretto</label>
-                    <InputSwitch checked={directAddress} onChange={(e) => setDirectAddress(e.value)}/>
-                </div>
-            </section>
-            {!directAddress && (
-                <section className="flex flex-column gap-2">
-                    <div className="flex flex-row align-items-center w-full justify-content-between gap-2">
-                        <label className="white-space-nowrap flex-shrink-0" htmlFor="radius">
-                            Distanza {radius ? radius : "0"} Km
-                        </label>
-                        <Slider
-                            value={radius}
-                            onChange={(e) => setRadius(e.value)}
-                            id="radius"
-                            min="0"
-                            max="10"
-                            className="flex-grow-1"
-                        />
-                        <Button
-                            className="flex-shrink-0"
-                            size="small"
-                            onClick={() => getServiceStations()}
-                            loading={loadingServiceStations}
-                        >
-                            Cerca
-                        </Button>
-                    </div>
-                </section>
-            )}
-            {directAddress && (
-                <section className="flex flex-row w-full align-content-center justify-content-center">
-                    <FloatLabel>
-                        <InputText
-                            id="address"
-                            value={address}
-                            onChange={(e) => setAddress(e.target.value)}
-                            style={{width: "100%"}}
-                        />
-                        <label htmlFor="address">Indirizzo</label>
-                    </FloatLabel>
-                    <Button size="small">Cerca</Button>
-                </section>
-            )}
+  const {
+    address,
+    setAddress,
+    radius,
+    setRadius,
+    getServiceStations,
+    loadingServiceStations,
+  } = useContext(ServiceStationsContext);
+
+  const [directAddress, setDirectAddress] = useState(false);
+
+  return (
+    <form className={styles.search}>
+      <header className={styles.header}>
+        <h1 className={styles.title}>
+          Pieno<span className={styles.title_alt}>Facile</span>
+        </h1>
+
+        <div className={styles.toggle}>
+          <label htmlFor="directAddress">Indirizzo diretto</label>
+          <input
+            id="directAddress"
+            type="checkbox"
+            checked={directAddress}
+            onChange={(e) => setDirectAddress(e.target.checked)}
+          />
         </div>
-    )
-        ;
+      </header>
+
+      {!directAddress && (
+        <section className={styles.row}>
+          <label htmlFor="radius" className={styles.label}>
+            Distanza: <strong>{radius ?? 0} km</strong>
+          </label>
+
+          <input
+            id="radius"
+            type="range"
+            min="0"
+            max="10"
+            value={radius}
+            onChange={(e) => setRadius(Number(e.target.value))}
+            className={styles.range}
+          />
+
+          <button
+            type="button"
+            className={styles.button}
+            onClick={getServiceStations}
+            disabled={loadingServiceStations}
+          >
+            {loadingServiceStations ? "Caricamento…" : "Cerca"}
+          </button>
+        </section>
+      )}
+
+      {directAddress && (
+        <section className={styles.row}>
+          <label htmlFor="address" className={styles.label}>
+            Indirizzo
+          </label>
+
+          <input
+            id="address"
+            type="text"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            className={styles.input}
+          />
+
+          <button
+            type="button"
+            className={styles.button}
+            onClick={getServiceStations}
+          >
+            Cerca
+          </button>
+        </section>
+      )}
+    </form>
+  );
 };
