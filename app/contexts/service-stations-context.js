@@ -31,7 +31,7 @@ export default function ServiceStationsProvider({children}) {
                         const distance = station.distance != null ? Number(station.distance) : null;
 
                         const fuelsByName = (station.fuels || []).reduce((acc, fuel) => {
-                            if (!acc[fuel.name]) acc[fuel.name] = { served: null, self: null };
+                            if (!acc[fuel.name]) acc[fuel.name] = {served: null, self: null};
                             if (fuel.isSelf) {
                                 acc[fuel.name].self = fuel.price;
                             } else {
@@ -52,6 +52,22 @@ export default function ServiceStationsProvider({children}) {
             .finally(() => setLoadingServiceStations(false));
     };
 
+    const geocodeLocation = (address) => {
+        console.log(address)
+        fetch("api/geocode", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            },
+            body: JSON.stringify({ address: address.toString() }),
+        })
+            .then((response) => response.json())
+            .then((response) => {
+                console.log(response);
+            });
+    };
+
     return (
         <ServiceStationsContext.Provider
             value={{
@@ -64,6 +80,7 @@ export default function ServiceStationsProvider({children}) {
                 address,
                 setAddress,
                 getServiceStations,
+                geocodeLocation,
                 loadingServiceStations
             }}
         >

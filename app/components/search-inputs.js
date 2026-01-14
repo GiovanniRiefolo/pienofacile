@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { ServiceStationsContext } from "../contexts/service-stations-context";
 import styles from "../app.module.css";
 
@@ -11,10 +11,25 @@ export const SearchInputs = () => {
     radius,
     setRadius,
     getServiceStations,
+    geocodeLocation,
     loadingServiceStations,
   } = useContext(ServiceStationsContext);
 
   const [directAddress, setDirectAddress] = useState(false);
+  const geocodeDebounceTimerRef = useRef(null);
+
+  const handleGeocode = (value) => {
+    setAddress(value);
+
+    if (geocodeDebounceTimerRef.current) {
+      clearTimeout(geocodeDebounceTimerRef.current);
+    }
+
+    // Debounce to avoid firing a request on every keystroke.
+    geocodeDebounceTimerRef.current = setTimeout(() => {
+      geocodeLocation(value);
+    }, 450);
+  };
 
   return (
     <form className={styles.search}>
@@ -71,7 +86,7 @@ export const SearchInputs = () => {
             id="address"
             type="text"
             value={address}
-            onChange={(e) => setAddress(e.target.value)}
+            onChange={(e) => handleGeocode(e.target.value)}
             className={styles.input}
           />
 
@@ -79,8 +94,9 @@ export const SearchInputs = () => {
             type="button"
             className={styles.button}
             onClick={getServiceStations}
+            disabled={loadingServiceStations}
           >
-            Cerca
+            {loadingServiceStations ? "Caricamento…" : "Cerca"}
           </button>
         </section>
       )}
