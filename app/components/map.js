@@ -1,16 +1,27 @@
 import { useContext, useEffect } from "react";
 import { ServiceStationsContext } from "../contexts/service-stations-context";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 
 import "leaflet/dist/leaflet.css";
 import "../leaflet-theme.css";
 import { Skeleton } from "primereact/skeleton";
 
-export default function Map(){
+function MapAutoCenter({ center, zoom }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!center) return;
+    // Keep map in sync with selected/search position.
+    map.setView(center, zoom, { animate: true });
+  }, [map, center, zoom]);
+
+  return null;
+}
+
+export default function Map() {
   const { serviceStationsList, position, setPosition } = useContext(
     ServiceStationsContext
   );
-  // const [geoData, setGeoData] = useState({});
 
   const positionIcon = L.icon({
     iconUrl: "/marker-position.png",
@@ -45,13 +56,13 @@ export default function Map(){
 
   return (
     <>
-      {!position && (
-        <Skeleton width={"100%"} height={"500px"} borderRadius="0" />
-      )}
+      {!position && <Skeleton width={"100%"} height={"500px"} borderRadius="0" />}
       {position && (
         <section className="map">
           <MapContainer center={position} zoom={13} style={{ height: "500px" }}>
+            <MapAutoCenter center={position} zoom={13} />
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+
             <Marker position={position} icon={positionIcon}>
               <Popup>A popup message on the marker.</Popup>
             </Marker>
@@ -68,9 +79,7 @@ export default function Map(){
                       <strong>{station.name}</strong>
                       <div>
                         {station.brand} -{" "}
-                        {station.distance && (
-                          <>{station.distance.toFixed(2)} Km</>
-                        )}
+                        {station.distance && <>{station.distance.toFixed(2)} Km</>}
                       </div>
                       {station.fuels &&
                         station.fuels.map((fuel, index) => (
@@ -80,8 +89,7 @@ export default function Map(){
                           >
                             <h4 style={{ margin: 0 }}>{fuel.name}</h4>
                             <p style={{ margin: 0 }}>
-                              Servito {fuel.prices.served}€ - Self{" "}
-                              {fuel.prices.self}€
+                              Servito {fuel.prices.served}€ - Self {fuel.prices.self}€
                             </p>
                           </div>
                         ))}
@@ -94,4 +102,4 @@ export default function Map(){
       )}
     </>
   );
-};
+}

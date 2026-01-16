@@ -1,105 +1,75 @@
 "use client";
 
-import { useContext, useRef, useState } from "react";
-import { ServiceStationsContext } from "../contexts/service-stations-context";
+import {useContext, useState} from "react";
+import {ServiceStationsContext} from "../contexts/service-stations-context";
 import styles from "../app.module.css";
+import {DirectAddressSearch} from "./direct-address-search";
 
 export const SearchInputs = () => {
-  const {
-    address,
-    setAddress,
-    radius,
-    setRadius,
-    getServiceStations,
-    geocodeLocation,
-    loadingServiceStations,
-  } = useContext(ServiceStationsContext);
+    const {
+        radius,
+        setRadius,
+        getServiceStations,
+        clearGeocodeResults,
+        loadingServiceStations,
+    } = useContext(ServiceStationsContext);
 
-  const [directAddress, setDirectAddress] = useState(false);
-  const geocodeDebounceTimerRef = useRef(null);
+    const [directAddress, setDirectAddress] = useState(false);
 
-  const handleGeocode = (value) => {
-    setAddress(value);
+    return (
+        <div className={styles.header}>
+            <section className={styles.heading}>
+                <h1 className={styles.title}>
+                    Pieno<span className={styles.title_alt}>Facile</span>
+                </h1>
 
-    if (geocodeDebounceTimerRef.current) {
-      clearTimeout(geocodeDebounceTimerRef.current);
-    }
+                <div className={styles.toggle}>
+                    <span className={styles.toggleLabel}>Indirizzo diretto</span>
+                    <button
+                        type="button"
+                        className={styles.toggleButton}
+                        aria-pressed={directAddress}
+                        onClick={() => {
+                            const nextValue = !directAddress;
+                            setDirectAddress(nextValue);
+                            if (!nextValue) clearGeocodeResults();
+                        }}
+                    >
+                        {directAddress ? "Vicino a me" : "Altro luogo"}
+                    </button>
+                </div>
+            </section>
 
-    // Debounce to avoid firing a request on every keystroke.
-    geocodeDebounceTimerRef.current = setTimeout(() => {
-      geocodeLocation(value);
-    }, 450);
-  };
+            <form className={styles.search}>
+                {!directAddress && (
+                    <section className={styles.row}>
+                        <label htmlFor="radius" className={styles.label}>
+                            Distanza: <strong>{radius ?? 0} km</strong>
+                        </label>
 
-  return (
-    <form className={styles.search}>
-      <header className={styles.header}>
-        <h1 className={styles.title}>
-          Pieno<span className={styles.title_alt}>Facile</span>
-        </h1>
+                        <input
+                            id="radius"
+                            type="range"
+                            min="0"
+                            max="10"
+                            value={radius}
+                            onChange={(e) => setRadius(Number(e.target.value))}
+                            className={styles.range}
+                        />
 
-        <div className={styles.toggle}>
-          <label htmlFor="directAddress">Indirizzo diretto</label>
-          <input
-            id="directAddress"
-            type="checkbox"
-            checked={directAddress}
-            onChange={(e) => setDirectAddress(e.target.checked)}
-          />
+                        <button
+                            type="button"
+                            className={styles.button}
+                            onClick={() => getServiceStations()}
+                            disabled={loadingServiceStations}
+                        >
+                            {loadingServiceStations ? "Caricamento…" : "Cerca"}
+                        </button>
+                    </section>
+                )}
+
+                {directAddress && <DirectAddressSearch/>}
+            </form>
         </div>
-      </header>
-
-      {!directAddress && (
-        <section className={styles.row}>
-          <label htmlFor="radius" className={styles.label}>
-            Distanza: <strong>{radius ?? 0} km</strong>
-          </label>
-
-          <input
-            id="radius"
-            type="range"
-            min="0"
-            max="10"
-            value={radius}
-            onChange={(e) => setRadius(Number(e.target.value))}
-            className={styles.range}
-          />
-
-          <button
-            type="button"
-            className={styles.button}
-            onClick={getServiceStations}
-            disabled={loadingServiceStations}
-          >
-            {loadingServiceStations ? "Caricamento…" : "Cerca"}
-          </button>
-        </section>
-      )}
-
-      {directAddress && (
-        <section className={styles.row}>
-          <label htmlFor="address" className={styles.label}>
-            Indirizzo
-          </label>
-
-          <input
-            id="address"
-            type="text"
-            value={address}
-            onChange={(e) => handleGeocode(e.target.value)}
-            className={styles.input}
-          />
-
-          <button
-            type="button"
-            className={styles.button}
-            onClick={getServiceStations}
-            disabled={loadingServiceStations}
-          >
-            {loadingServiceStations ? "Caricamento…" : "Cerca"}
-          </button>
-        </section>
-      )}
-    </form>
-  );
+    );
 };

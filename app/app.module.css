@@ -1,139 +1,252 @@
-/* base variables and layout */
-.search {
-  display: flex;
-  flex-flow: column;
-  gap: 1rem;
+@import './globals.css';
 
-  background: var(--background);
-  color: var(--foreground);
-
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
-}
 
 /* header */
 .header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 
-  padding-bottom: 1rem;
-  border-bottom: var(--border);
+    display: flex;
+    flex-flow: column;
+    gap: 1rem;
+    padding: 0 0 1rem 0;
+    border-bottom: var(--border);
+
+    background: var(--background);
+    color: var(--foreground);
+
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+.heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    box-sizing: border-box;
+    border-bottom: var(--border);
+    background: var(--foreground);
 }
 
 .title {
-  font-size: 1.6rem;
-  font-weight: 800;
-  text-transform: uppercase;
+    font-size: 1.6rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--background);
+    margin: 0;
 }
+
 .title_alt {
-  color: var(--accent);
-  background-color: var(--foreground);
-  padding: 0 0.2rem;
+    background-color: var(--accent);
+    color: var(--foreground);
+    padding: 0 0.2rem;
+}
+
+.search {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem 0 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    border-bottom: none;
 }
 
 /* direct address toggle */
 .toggle {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
 
-  font-weight: 600;
+    font-weight: 600;
 }
 
-.toggle input[type="checkbox"] {
-  width: 1.5rem;
-  height: 1.5rem;
-  accent-color: #000;
+.toggleLabel {
+    font-weight: 600;
+}
+
+.toggleButton {
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 0.55rem 0.85rem;
+
+    background: #fff;
+    color: #000;
+    border: var(--border);
+    cursor: pointer;
+    box-shadow: 3px 3px 0 #000;
+}
+
+.toggleButton:hover,
+.toggleButton:focus-visible {
+    outline: none;
+    background: #f3f3f3;
 }
 
 /* form sections */
 .column {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .row {
-  display: flex;
-  flex-direction: row nowrap;
-  gap: 1rem;
-  align-items: center;
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 1rem;
+    align-items: center;
+    width: 100%;
 }
+
 /* labels */
 .label {
-  font-size: 1rem;
-  font-weight: 700;
+    font-size: 1.2rem;
+    font-weight: 700;
+    white-space: nowrap;
 }
 
 /* text input */
 .input {
-  font-size: 1rem;
-  padding: 0.75rem;
+    padding: 0.75rem;
 
-  background: transparent;
-  color: inherit;
-  border: var(--border);
-  box-shadow: 3px 3px 0 #000;
+    background: transparent;
+    color: inherit;
+    border: var(--border);
+    box-shadow: 3px 3px 0 #000;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1.2rem;
+    line-height: 1;
 }
 
 .input:focus {
-  outline: none;
+    outline: none;
 }
 
 /* range input */
 .range {
-  width: 100%;
-  height: 2px;
+    width: 100%;
+    height: 2px;
 
-  appearance: none;
-  background: #000;
+    appearance: none;
+    background: #000;
 }
 
 .range::-webkit-slider-thumb {
-  appearance: none;
+    appearance: none;
 
-  width: 24px;
-  height: 24px;
+    width: 24px;
+    height: 24px;
 
-  background: #fff;
-  border: var(--border);
-  border-radius: 100%;
-  cursor: pointer;
-  box-shadow: 3px 3px 0 #000;
+    background: #fff;
+    border: var(--border);
+    border-radius: 100%;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 #000;
 }
 
 .range::-moz-range-thumb {
-  width: 24px;
-  height: 24px;
+    width: 24px;
+    height: 24px;
 
-  border-radius: 100%;
-  background: #fff;
-  border: var(--border);
-  cursor: pointer;
+    border-radius: 100%;
+    background: #fff;
+    border: var(--border);
+    cursor: pointer;
 }
 
 /* buttons */
 .button {
-  align-self: flex-start;
+    align-self: flex-start;
 
-  font-size: 1rem;
-  font-weight: 500;
+    font-size: 1.2rem;
+    font-weight: 500;
 
-  padding: 0.75rem 1.25rem;
+    padding: 0.75rem 1.25rem;
 
-  background: #000;
-  color: #fff;
-  border: var(--border);
-  cursor: pointer;
+    background: #000;
+    color: #fff;
+    border: var(--border);
+    cursor: pointer;
+    white-space: nowrap;
 }
 
 .button:hover {
-  background: #fff;
-  color: #000;
+    background: #fff;
+    color: #000;
 }
 
 .button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.directAddressSection {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+    width: 100%;
+}
+
+.directAddressControls {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: end;
+    width: 100%;
+}
+
+/* Sliding panel: fixed under the header, full viewport height minus header (166px) */
+.directAddressPanel {
+    position: fixed;
+    left: 0;
+    top: 186px;
+    width: min(520px, 100%);
+    height: calc(100vh - 186px);
+    background: var(--background);
+    border: var(--border);
+    overflow: auto;
+
+    transform: translateX(-105%);
+    transition: transform 220ms ease;
+    will-change: transform;
+    z-index: 9999;
+}
+
+.directAddressPanelOpen {
+    transform: translateX(0);
+}
+
+.directAddressList {
+    list-style: none;
+    padding: 1rem;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.directAddressListItem {
+    margin: 0;
+}
+
+.directAddressListButton {
+    width: 100%;
+    text-align: left;
+    padding: .5rem;
+    border: var(--border);
+    background: var(--background);
+    color: var(--foreground);
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.directAddressListButton:hover,
+.directAddressListButton:focus-visible {
+    outline: none;
+    color: var(--background);
+    background: var(--foreground);
 }

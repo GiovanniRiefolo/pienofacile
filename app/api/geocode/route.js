@@ -1,6 +1,6 @@
 import {NextResponse} from "next/server";
 
-export async function GET(request) {
+export async function POST(request) {
     const body = await request.json();
     const address = body.address;
     console.log(`https://nominatim.openstreetmap.org/search?q=${address.toString()}&format=geocodejson`)

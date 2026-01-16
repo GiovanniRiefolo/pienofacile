@@ -11,16 +11,25 @@ export default function ServiceStationsProvider({children}) {
     const [address, setAddress] = useState("");
     const [loadingServiceStations, setLoadingServiceStations] = useState(false);
 
-    const getServiceStations = () => {
+    const [geocodeFeatures, setGeocodeFeatures] = useState([]);
+
+    const clearGeocodeResults = () => setGeocodeFeatures([]);
+
+    const getServiceStations = (latOverride, lngOverride) => {
         setLoadingServiceStations(true);
-        if (!position) {
+
+        const hasOverrides = Number.isFinite(latOverride) && Number.isFinite(lngOverride);
+        const effectivePosition = hasOverrides ? [latOverride, lngOverride] : position;
+
+        if (!effectivePosition) {
             setLoadingServiceStations(false);
             return;
         }
+
         fetch("api/zone", {
             method: "POST",
             body: JSON.stringify({
-                points: [{lat: position[0], lng: position[1]}],
+                points: [{lat: effectivePosition[0], lng: effectivePosition[1]}],
                 radius: radius,
             }),
         })
@@ -52,20 +61,49 @@ export default function ServiceStationsProvider({children}) {
             .finally(() => setLoadingServiceStations(false));
     };
 
-    const geocodeLocation = (address) => {
-        console.log(address)
+    const geocodeLocation = (rawAddress) => {
+        const normalizedAddress = (rawAddress || "").trim();
+
+        if (normalizedAddress.length < 3) {
+            setGeocodeFeatures([]);
+            return;
+        }
+
         fetch("api/geocode", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
             },
-            body: JSON.stringify({ address: address.toString() }),
+            body: JSON.stringify({ address: normalizedAddress }),
         })
             .then((response) => response.json())
             .then((response) => {
-                console.log(response);
+                // Keep raw features to avoid extra transformations.
+                setGeocodeFeatures(Array.isArray(response?.features) ? response.features : []);
             });
+    };
+
+    const selectGeocodeFeature = (feature) => {
+        const coordinates = feature?.geometry?.coordinates;
+
+        // Nominatim geocodejson: coordinates are [lon, lat]
+        const lng = Array.isArray(coordinates) ? Number(coordinates[0]) : NaN;
+        const lat = Array.isArray(coordinates) ? Number(coordinates[1]) : NaN;
+
+        if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+
+        const label =
+            feature?.properties?.geocoding?.label ||
+            feature?.properties?.geocoding?.name ||
+            "";
+
+        if (label) setAddress(label);
+
+        setPosition([lat, lng]);
+        setGeocodeFeatures([]);
+
+        getServiceStations(lat, lng);
     };
 
     return (
@@ -81,6 +119,9 @@ export default function ServiceStationsProvider({children}) {
                 setAddress,
                 getServiceStations,
                 geocodeLocation,
+                geocodeFeatures,
+                clearGeocodeResults,
+                selectGeocodeFeature,
                 loadingServiceStations
             }}
         >
