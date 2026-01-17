@@ -1,87 +1,107 @@
 "use client";
 
 import { useContext } from "react";
+import dynamic from "next/dynamic";
 import { ServiceStationsContext } from "../contexts/service-stations-context";
 import { SearchInputs } from "./search-inputs";
-import { Card } from "primereact/card";
-import { Chip } from "primereact/chip";
-import { ProgressSpinner } from "primereact/progressspinner";
-import { Button } from "primereact/button";
-import dynamic from "next/dynamic";
+import styles from "../app.module.css";
 
 const Map = dynamic(() => import("../components/map.js"), { ssr: false });
 
 export const ServiceStations = () => {
-  const { serviceStationsList, loadingServiceStations } = useContext(
-    ServiceStationsContext
-  );
+  const { serviceStationsList, loadingServiceStations } = useContext(ServiceStationsContext);
 
   const openToGMaps = (lat, lng) => {
-    if (window !== undefined) {
-      window.open(
-        `https://maps.google.com/?q=${lat},${lng}`,
-        "_blank",
-        "noopener,noreferrer"
-      );
-    }
+    if (typeof window === "undefined") return;
+    window.open(
+      `https://maps.google.com/?q=${lat},${lng}`,
+      "_blank",
+      "noopener,noreferrer"
+    );
   };
 
   return (
-    <main className="container flex flex-column gap-4">
+    <main className={styles.page}>
       <SearchInputs />
       <Map />
-      <section className="flex flex-column gap-2">
+
+      <section className={styles.stationsSection} aria-busy={loadingServiceStations}>
         {loadingServiceStations && (
-          <ProgressSpinner
-            style={{ width: "50px", height: "50px" }}
-            strokeWidth="4"
-            aria-label="Caricamento in corso"
-          />
+          <p className={styles.stationsHint} aria-live="polite">
+            Caricamento…
+          </p>
         )}
-        {serviceStationsList &&
-          serviceStationsList.map((station) => (
-            <Card
-              // className=""
-              footer={
-                <div className="flex flex-row gap-2 align-items-center justify-content-between">
-                  <Chip
-                    label={new Date(station.insertDate).toLocaleDateString()}
-                    icon="pi pi-calendar"
-                  />
-                  <Button
-                    label="Apri Mappa"
-                    icon="pi pi-map-marker"
-                    outlined
-                    size="small"
-                    onClick={() =>
-                      openToGMaps(station.location.lat, station.location.lng)
-                    }
-                  />
-                </div>
-              }
-              key={station.id}
-              title={<>{station.name} </>}
-              subTitle={
-                <>
-                  {station.brand} -{" "}
-                  {station.distance && <>{station.distance.toFixed(2)} Km</>}{" "}
-                </>
-              }
-              className=" "
-            >
-              {station.fuels &&
-                station.fuels.map((fuel, index) => (
-                  <div
-                    className="flex flex-row gap-2 align-items-center py-1"
-                    key={index}
-                  >
-                    <h4 className="m-0">{fuel.name}</h4>
-                    <p className="m-0">Servito {fuel.prices.served}€</p> -
-                    <p className="m-0">Self {fuel.prices.self}€</p>
-                  </div>
-                ))}
-            </Card>
-          ))}
+
+        {!loadingServiceStations && (!serviceStationsList || serviceStationsList.length === 0) && (
+          <p className={styles.stationsHint}>Nessun risultato.</p>
+        )}
+
+        {serviceStationsList && serviceStationsList.length > 0 && (
+          <ul className={styles.stationCards}>
+            {serviceStationsList.map((station) => {
+              const hasLocation =
+                station?.location?.lat != null && station?.location?.lng != null;
+
+              return (
+                <li key={station.id} className={styles.stationCardsItem}>
+                  <article className={styles.stationCard}>
+                    <header className={styles.stationHeader}>
+                      <div className={styles.stationHeaderTop}>
+                        <h3 className={styles.stationTitle}>{station.name}</h3>
+                        {station.distance != null && (
+                          <span className={styles.stationDistance}>
+                            {Number(station.distance).toFixed(2)} km
+                          </span>
+                        )}
+                      </div>
+
+                      <p className={styles.stationSubtitle}>{station.brand}</p>
+
+                      <p className={styles.stationMeta}>
+                        Aggiornato:{" "}
+                        {station.insertDate
+                          ? new Date(station.insertDate).toLocaleDateString()
+                          : "-"}
+                      </p>
+                    </header>
+
+                    {station.fuels && station.fuels.length > 0 && (
+                      <table className={styles.stationFuelTable}>
+                        <thead>
+                          <tr>
+                            <th>Carburante</th>
+                            <th>Servito</th>
+                            <th>Self</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {station.fuels.map((fuel, index) => (
+                            <tr key={`${station.id}-${fuel.name}-${index}`}>
+                              <td className={styles.stationFuelNameCell}>{fuel.name}</td>
+                              <td>{fuel.prices?.served ?? "-" }€</td>
+                              <td>{fuel.prices?.self ?? "-" }€</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
+
+                    <footer className={styles.stationFooter}>
+                      <button
+                        type="button"
+                        className={styles.mapButton}
+                        onClick={() => openToGMaps(station.location?.lat, station.location?.lng)}
+                        disabled={!hasLocation}
+                      >
+                        Apri mappa
+                      </button>
+                    </footer>
+                  </article>
+                </li>
+              );
+            })}
+          </ul>
+        )}
       </section>
     </main>
   );

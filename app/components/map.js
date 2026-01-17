@@ -4,7 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 
 import "leaflet/dist/leaflet.css";
 import "../leaflet-theme.css";
-import { Skeleton } from "primereact/skeleton";
+import styles from "../app.module.css";
 
 function MapAutoCenter({ center, zoom }) {
   const map = useMap();
@@ -52,19 +52,19 @@ export default function Map() {
 
   useEffect(() => {
     getGeolocalizationData();
-  }, []);
+  });
 
   return (
     <>
-      {!position && <Skeleton width={"100%"} height={"500px"} borderRadius="0" />}
+      {!position && <div className={styles.mapSkeleton} />}
       {position && (
-        <section className="map">
-          <MapContainer center={position} zoom={13} style={{ height: "500px" }}>
+        <section className={styles.mapSection}>
+          <MapContainer center={position} zoom={13} className={styles.mapCanvas}>
             <MapAutoCenter center={position} zoom={13} />
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
             <Marker position={position} icon={positionIcon}>
-              <Popup>A popup message on the marker.</Popup>
+              <Popup>Posizione selezionata</Popup>
             </Marker>
 
             {serviceStationsList &&
@@ -78,21 +78,11 @@ export default function Map() {
                     <div>
                       <strong>{station.name}</strong>
                       <div>
-                        {station.brand} -{" "}
-                        {station.distance && <>{station.distance.toFixed(2)} Km</>}
+                        {station.brand}
+                        {station.distance != null && (
+                          <> · {station.distance.toFixed(2)} km</>
+                        )}
                       </div>
-                      {station.fuels &&
-                        station.fuels.map((fuel, index) => (
-                          <div
-                            key={index}
-                            style={{ paddingTop: "4px", paddingBottom: "4px" }}
-                          >
-                            <h4 style={{ margin: 0 }}>{fuel.name}</h4>
-                            <p style={{ margin: 0 }}>
-                              Servito {fuel.prices.served}€ - Self {fuel.prices.self}€
-                            </p>
-                          </div>
-                        ))}
                     </div>
                   </Popup>
                 </Marker>
