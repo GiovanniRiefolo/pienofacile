@@ -3,7 +3,6 @@ import {NextResponse} from "next/server";
 export async function POST(request) {
     const body = await request.json();
     const address = body.address;
-    console.log(`https://nominatim.openstreetmap.org/search?q=${address.toString()}&format=geocodejson`)
 
     const nominatimResponse = await fetch(
         `https://nominatim.openstreetmap.org/search?q=${address.toString()}&format=geocodejson`,
@@ -11,10 +10,12 @@ export async function POST(request) {
             method: "GET",
             headers: {
                 Accept: "application/json",
+                "User-Agent": "pienofacile/1.0 (contact: giovanni@riefolo.dev)",
             },
         }
     );
 
+    console.log(nominatimResponse)
     if (!nominatimResponse.ok) {
         return NextResponse.json({message: "Geocoding provider error"}, {status: 502});
     }
