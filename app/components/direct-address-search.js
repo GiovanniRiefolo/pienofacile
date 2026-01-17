@@ -13,7 +13,6 @@ export const DirectAddressSearch = () => {
     selectGeocodeFeature,
     clearGeocodeResults,
     loadingServiceStations,
-    getServiceStations,
   } = useContext(ServiceStationsContext);
 
   const geocodeDebounceTimerRef = useRef(null);
@@ -29,6 +28,15 @@ export const DirectAddressSearch = () => {
     geocodeDebounceTimerRef.current = setTimeout(() => {
       geocodeLocation(value);
     }, 450);
+  };
+
+  const handleManualSearchClick = () => {
+    if (loadingServiceStations) return;
+
+    const hasSuggestions = Array.isArray(geocodeFeatures) && geocodeFeatures.length > 0;
+    if (hasSuggestions) return;
+
+    geocodeLocation(address);
   };
 
   const isPanelOpen = Array.isArray(geocodeFeatures) && geocodeFeatures.length > 0;
@@ -52,7 +60,7 @@ export const DirectAddressSearch = () => {
         <button
           type="button"
           className={styles.button}
-          onClick={() => getServiceStations()}
+          onClick={handleManualSearchClick}
           disabled={loadingServiceStations}
         >
           {loadingServiceStations ? "Caricamento…" : "Cerca"}

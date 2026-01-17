@@ -74,6 +74,31 @@ button {
   --border: 2px solid #000;
 }
 
+/* Scrollbar styling */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--foreground) var(--background);
+}
+
+*::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--foreground);
+  border: 2px solid var(--background);
+  border-radius: 10px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #000;
+}
+
 html,
 body {
   width: 100%;
@@ -81,7 +106,6 @@ body {
   margin: 0;
   padding: 0;
 }
-
 
 body {
   color: var(--foreground);
