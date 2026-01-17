@@ -225,13 +225,6 @@
     transform: translateX(0);
 }
 
-/* Keep Leaflet controls below overlays like address panel */
-:global(.leaflet-control),
-:global(.leaflet-top),
-:global(.leaflet-bottom) {
-    z-index: 500;
-}
-
 .directAddressList {
     list-style: none;
     padding: 1rem;
