@@ -4,8 +4,10 @@ export async function POST(request) {
     const body = await request.json();
     const address = body.address;
 
+    const q = encodeURIComponent(String(address ?? "").trim());
+
     const nominatimResponse = await fetch(
-        `https://nominatim.openstreetmap.org/search?q=${address.toString()}&format=geocodejson`,
+        `https://nominatim.openstreetmap.org/search?q=${q}&format=jsonv2`,
         {
             method: "GET",
             headers: {
@@ -15,7 +17,6 @@ export async function POST(request) {
         }
     );
 
-    console.log(nominatimResponse)
     if (!nominatimResponse.ok) {
         return NextResponse.json({message: "Geocoding provider error"}, {status: 502});
     }

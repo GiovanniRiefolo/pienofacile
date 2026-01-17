@@ -11,9 +11,20 @@ export default function ServiceStationsProvider({children}) {
     const [address, setAddress] = useState("");
     const [loadingServiceStations, setLoadingServiceStations] = useState(false);
 
-    const [geocodeFeatures, setGeocodeFeatures] = useState([]);
+    const [geocodeResults, setGeocodeResults] = useState([]);
 
-    const clearGeocodeResults = () => setGeocodeFeatures([]);
+    const clearGeocodeResults = () => setGeocodeResults([]);
+
+    const refreshGeolocation = () => {
+        if (!navigator?.geolocation) return;
+
+        navigator.geolocation.getCurrentPosition((currentPosition) => {
+            setPosition([
+                currentPosition.coords.latitude,
+                currentPosition.coords.longitude,
+            ]);
+        });
+    };
 
     const getServiceStations = (latOverride, lngOverride) => {
         setLoadingServiceStations(true);
@@ -65,7 +76,7 @@ export default function ServiceStationsProvider({children}) {
         const normalizedAddress = (rawAddress || "").trim();
 
         if (normalizedAddress.length < 3) {
-            setGeocodeFeatures([]);
+            setGeocodeResults([]);
             return;
         }
 
@@ -79,30 +90,17 @@ export default function ServiceStationsProvider({children}) {
         })
             .then((response) => response.json())
             .then((response) => {
-                // Keep raw features to avoid extra transformations.
-                setGeocodeFeatures(Array.isArray(response?.features) ? response.features : []);
+                setGeocodeResults(Array.isArray(response) ? response : []);
             });
     };
 
-    const selectGeocodeFeature = (feature) => {
-        const coordinates = feature?.geometry?.coordinates;
+    const selectGeocodeResult = (result) => {
+        const lat = parseFloat(result?.lat);
+        const lng = parseFloat(result?.lon);
 
-        // Nominatim geocodejson: coordinates are [lon, lat]
-        const lng = Array.isArray(coordinates) ? Number(coordinates[0]) : NaN;
-        const lat = Array.isArray(coordinates) ? Number(coordinates[1]) : NaN;
-
-        if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
-
-        const label =
-            feature?.properties?.geocoding?.label ||
-            feature?.properties?.geocoding?.name ||
-            "";
-
-        if (label) setAddress(label);
-
+        setAddress(result?.display_name);
         setPosition([lat, lng]);
-        setGeocodeFeatures([]);
-
+        setGeocodeResults([]);
         getServiceStations(lat, lng);
     };
 
@@ -119,9 +117,10 @@ export default function ServiceStationsProvider({children}) {
                 setAddress,
                 getServiceStations,
                 geocodeLocation,
-                geocodeFeatures,
+                geocodeResults,
                 clearGeocodeResults,
-                selectGeocodeFeature,
+                selectGeocodeResult,
+                refreshGeolocation,
                 loadingServiceStations
             }}
         >

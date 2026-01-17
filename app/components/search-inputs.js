@@ -12,6 +12,7 @@ export const SearchInputs = () => {
         getServiceStations,
         clearGeocodeResults,
         loadingServiceStations,
+        refreshGeolocation,
     } = useContext(ServiceStationsContext);
 
     const [directAddress, setDirectAddress] = useState(false);
@@ -32,7 +33,11 @@ export const SearchInputs = () => {
                         onClick={() => {
                             const nextValue = !directAddress;
                             setDirectAddress(nextValue);
-                            if (!nextValue) clearGeocodeResults();
+
+                            if (!nextValue) {
+                                clearGeocodeResults();
+                                refreshGeolocation();
+                            }
                         }}
                     >
                         {directAddress ? "Vicino a me" : "Altro luogo"}

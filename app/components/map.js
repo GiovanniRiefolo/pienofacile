@@ -9,11 +9,13 @@ import styles from "../app.module.css";
 function MapAutoCenter({ center, zoom }) {
   const map = useMap();
 
+  const lat = Array.isArray(center) ? center[0] : null;
+  const lng = Array.isArray(center) ? center[1] : null;
+
   useEffect(() => {
-    if (!center) return;
-    // Keep map in sync with selected/search position.
-    map.setView(center, zoom, { animate: true });
-  }, [map, center, zoom]);
+    if (lat == null || lng == null) return;
+    map.setView([lat, lng], zoom, { animate: true });
+  }, [map, lat, lng, zoom]);
 
   return null;
 }
@@ -41,18 +43,17 @@ export default function Map() {
     shadowSize: [40, 32],
   });
 
-  const getGeolocalizationData = () => {
-    navigator.geolocation.getCurrentPosition((currentPosition) => {
-      setPosition([
-        currentPosition.coords.latitude,
-        currentPosition.coords.longitude,
-      ]);
-    });
-  };
+    useEffect(() => {
+        if (!position) {
+            navigator.geolocation.getCurrentPosition((currentPosition) => {
+                setPosition([
+                    currentPosition.coords.latitude,
+                    currentPosition.coords.longitude,
+                ]);
+            });
+        }
+    }, [position, setPosition]);
 
-  useEffect(() => {
-    getGeolocalizationData();
-  });
 
   return (
     <>
