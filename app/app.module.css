@@ -327,13 +327,32 @@
     list-style: none;
     padding: 0;
     margin: 0;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr;
     gap: 14px;
+}
+
+@media (min-width: 640px) {
+    .stationCards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .stationCards {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 1440px) {
+    .stationCards {
+        grid-template-columns: repeat(4, 1fr);
+    }
 }
 
 .stationCardsItem {
     margin: 0;
+    min-width: 0;
 }
 
 .stationCard {
@@ -343,6 +362,9 @@
     padding: 14px;
     box-shadow: 3px 3px 0 var(--foreground);
     transition: box-shadow 160ms ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .stationHeader {
@@ -354,19 +376,21 @@
 
 .stationHeaderTop {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
     gap: 12px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 }
 
 .stationTitle {
     margin: 0;
     font-size: 1.5rem;
     font-weight: 900;
-
     min-width: 0;
-    overflow-wrap: anywhere;
+    flex: 1 1 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .stationDistance {
@@ -383,6 +407,17 @@
     margin: 0;
     font-weight: 700;
     opacity: 0.9;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.brandLogo {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    flex-shrink: 0;
+    border-radius: 2px;
 }
 
 .stationMeta {
@@ -432,6 +467,7 @@
     padding: 10px;
     border-bottom: 1px solid var(--foreground);
     font-weight: 700;
+    font-size: 1.1rem;
 }
 
 .stationFuelTable tbody tr:last-child td {
@@ -469,4 +505,156 @@
 .mapButton:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+/* Station footer — pushed to bottom inside flex-column card */
+.stationFooter {
+    margin-top: auto;
+    padding-top: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* Fuel type filter */
+.fuelFilter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin: 12px 0;
+}
+
+.fuelFilterBtn {
+    font-size: 0.875rem;
+    font-weight: 800;
+    padding: 0.4rem 0.9rem;
+    border: var(--border);
+    background: var(--background);
+    color: var(--foreground);
+    cursor: pointer;
+    box-shadow: 2px 2px 0 var(--foreground);
+    transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease, color 120ms ease;
+    text-transform: uppercase;
+}
+
+.fuelFilterBtn:hover {
+    background: var(--foreground);
+    color: var(--background);
+    box-shadow: 2px 2px 0 var(--accent);
+}
+
+.fuelFilterBtn:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0 var(--foreground);
+}
+
+.fuelFilterBtnActive {
+    background: var(--foreground);
+    color: var(--background);
+    box-shadow: 2px 2px 0 var(--accent);
+}
+
+/* Altro dropdown */
+.fuelFilterAltro {
+    display: inline-flex;
+    align-items: stretch;
+    border: var(--border);
+    box-shadow: 2px 2px 0 var(--foreground);
+    background: var(--background);
+    transition: box-shadow 120ms ease, background 120ms ease;
+    overflow: hidden;
+}
+
+.fuelFilterAltroLabel {
+    font-size: 0.875rem;
+    font-weight: 800;
+    padding: 0.4rem 0.7rem;
+    text-transform: uppercase;
+    border-right: var(--border);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+}
+
+.fuelFilterAltroSelect {
+    font-size: 0.875rem;
+    font-weight: 700;
+    padding: 0.4rem 0.5rem;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    min-width: 90px;
+}
+
+.fuelFilterAltroActive {
+    background: var(--foreground);
+    color: var(--background);
+    box-shadow: 2px 2px 0 var(--accent);
+}
+
+.fuelFilterAltroActive .fuelFilterAltroLabel {
+    border-right-color: #555;
+}
+
+.fuelFilterAltroActive .fuelFilterAltroSelect {
+    color: var(--background);
+    background: transparent;
+}
+
+/* Reset filter button */
+.fuelFilterReset {
+    font-size: 0.875rem;
+    font-weight: 800;
+    padding: 0.4rem 0.9rem;
+    border: var(--border);
+    background: var(--foreground);
+    color: var(--background);
+    cursor: pointer;
+    box-shadow: 2px 2px 0 var(--accent);
+    transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease, color 120ms ease;
+    text-transform: uppercase;
+    margin-left: auto;
+}
+
+.fuelFilterReset:hover {
+    background: var(--accent);
+    color: var(--foreground);
+    box-shadow: 2px 2px 0 var(--foreground);
+}
+
+.fuelFilterReset:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0 var(--foreground);
+}
+
+/* Best price card */
+.stationCardBest {
+    border-color: var(--accent);
+    box-shadow: 4px 4px 0 var(--accent);
+}
+
+/* Badges container (best badge + distance) */
+.stationHeaderBadges {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    flex: 0 0 auto;
+}
+
+/* Best price badge */
+.bestBadge {
+    display: inline-flex;
+    padding: 4px 8px;
+    border: var(--border);
+    box-shadow: 2px 2px 0 var(--foreground);
+    font-weight: 800;
+    background: var(--accent);
+    white-space: nowrap;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
 }
